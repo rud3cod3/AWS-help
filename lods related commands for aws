@@ -1,0 +1,2 @@
+# CHECK LOGS FOR USER DATA SCRIPT
+tail -3000 /var/log/cloud-init-output.log
