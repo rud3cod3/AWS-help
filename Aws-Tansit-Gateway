@@ -1,0 +1,30 @@
+## VPC Transit Gateway
+
+# Centralized hub
+# Can easily connect everything
+
+* one or more vpcs
+* one or more vpn connections
+* one or more aws direct connect gateways
+* one or more transit gateway peering connections
+
+# We can create two transit gateway to connect cross account clouds or mutli-regional vpc's
+
+-----------
+Step : 01
+-----------
+
+create 4 vpc and 4 subnets in same AZ
+
+now lauch one ec2 instance just for checking it will work without that as well.
+ 
+go to VPC >> Transit Gateway >> Create endpoint >> done
+
+now go to transit gateway attachments.
+
+create transit gateway attachment >> choose tgi (gateway id created earlier) 
+choose attachment type >> VPC
+then choose VPC id (choosing subnet)
+click on create
+
+now follow this process till you are done making for all of four vpc's.
