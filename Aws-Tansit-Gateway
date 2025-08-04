@@ -28,3 +28,18 @@ then choose VPC id (choosing subnet)
 click on create
 
 now follow this process till you are done making for all of four vpc's.
+
+---------
+Step : 02
+---------
+
+go to edit route > add all subnets like
+
+192.168.10.0/24		# default available
+192.168.20.0/24		# added after - transit gateway
+192.168.30.0/24		# added after - transit gateway
+192.168.40.0/24		# added after - transit gateway
+
+hit "Save changes" 
+
+Repeat above given process for all the subnets 
