@@ -1,0 +1,74 @@
+---------
+Step : 01
+---------
+
+First create VPC in one region
+- USA-vpc
+
+Then create a subnet 
+- 192.168.0.0/24
+
+Launch an ec2-instance
+
+---------
+Step : 02
+---------
+
+Second VPC creation in the second region
+- Mumbai-vpc
+
+Then subnet
+-192.168.1.0/24
+
+Launch ec2-instance
+
+---------
+Step : 03
+---------
+
+Both ec2-instance are in different region, subnet and vpc so they will also dont have public ip
+
+How to connect then ? vpc peering is the answer
+
+now create an Endpoint
+
+VPC >> Endpoints >> Create Endpoint >> EC2 Instance Connect Endpoint 
+
+Choose subnet also security group and other things
+
+click on "Create Endpoitns"
+
+connect ec2 instance using this endpoint/ connect using private ip
+
+---------
+Step : 04
+---------
+
+Goto any region either of them go to one
+
+Choose peering connection
+
+vpc >>  virtual private cloud(section)  >> peering connection >> create peering connection 
+
+choose requesters vpcid 
+then choose whom you want to peer with like same account with vpcs in different region or another account ( in my case same account )
+choose the another region (us-east-1 in my case)
+
+Go to the second regions vpc and copy its address and paste in on the requesters side >> then create peering request
+
+---------
+Step : 05
+---------
+
+Go to second region >> vpc >> peering request 
+
+And accept the peering request 
+
+
+now to make the communication happen add routing table
+
+go to route table > choose default beacuse thats which being used >  routes > 192.168.1.0/24  and select peering connection and vpc 
+
+do this on both side and boom you have received your ping request 
+
+also one thing i mention to forgot if we want to make both host available for each other we have to create endpoints on both side
