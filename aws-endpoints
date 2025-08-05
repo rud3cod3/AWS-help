@@ -1,0 +1,7 @@
+* Endpoint
+
+1. Interface endpoint
+2. Gateway endpoint		# DynamoDB, S3, Must add entry in route table
+3. Gateway load balancer endpoint
+
+ 

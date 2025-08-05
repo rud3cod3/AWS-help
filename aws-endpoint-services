@@ -1,0 +1,3 @@
+* Use private link to connect to services which are running in private subnets
+* We cant connect resources runnning cross region we will have to configure vpc peering 
+* It only allow TCP taffic
