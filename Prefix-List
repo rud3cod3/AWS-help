@@ -1,0 +1,21 @@
+* prefix list is a collection of CIDR blocks (IP address ranges)
+
+* Route tables
+* Security groups
+* Network ACLs
+* Firewall rules
+
++------------------+-------------------------------------------------------+
+| Feature          | Description                                           |
++------------------+-------------------------------------------------------+
+| What it contains | List of CIDR blocks                                   |
+| Purpose          | Simplify and centralize IP-based rules                |
+| Where used       | Route tables, security groups, network ACLs, firewall |
+| Types            | AWS-managed, Customer-managed                         |
+| Key benefit      | Reusability and easier updates                        |
++------------------+-------------------------------------------------------+
+
+* always use it with outbound list only use inbound when needed
+* max number of route table 50
+* max number of security group 60
+* to avoid this we use prefix-list to overcome limiatations of security groups and route table

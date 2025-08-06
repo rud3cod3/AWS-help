@@ -1,0 +1,25 @@
+Suppose you bought a domain and you want to host it from aws so these are the steps to be followed
+
+---------
+Step : 01
+---------
+
+aws > route53 > dashboard > create hosted zone > add your domain name in it and then click on create hosted zone
+
+---------
+Step : 02
+---------
+
+now go to go daddy and in manage domain > DNS > add your hosted zones nameserver addresses
+
+---------
+Step : 03
+---------
+
+- now in route53 hosted zone use create record 
+- choose recordname whatever you want in my case it is "iam"
+- in record type choose 'A record'
+- in Value give public ip of ec2-instance
+- keep routing policy to "Simple Routing"	
+
+check your website after 10-15 minutes of the operation
