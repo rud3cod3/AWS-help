@@ -154,3 +154,6 @@ Step : 03
 - in ip-based column choose your cidr block and choose health check id if any also change ttl to 1m(300)
 - repeat it untill you are done with the number of cidr blocks 
 - and after finishing use nslookup for to verify the changes
+
+- inshort mean
+- when you say 100.0.0.0/8 in cidr block and include it in A Record what it means is that all the request coming from the ip of 100 will be transfered to the respected webserver which is included in A type records webserver
