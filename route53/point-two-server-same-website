@@ -1,0 +1,25 @@
+- First create a hosted zone, you will get NS and SOA record created automatically
+- Now go to create record >> enter record name ( use @ or leave it empty for to keep it same as domain)
+- Add ip of web server them *** IMPORTANT *** choose routing policy to "WEIGHTED" and choose "50" in weight
+- Choose record id according to preference it is for your understanding >> create record 
+- Repeat prcoess twice it will work 
+
+* Something about weight which is mentioned here
+
+limit : [ 0 -255 ]
+
+Example : suppose you have 3 web server
+
+web-server-1 --> Handles 50% traffic --> weight 120
+web-server-2 --> Handles 25% traffic --> weight 50
+web-server-3 --> Handles 25% traffic --> weight 30
+
+how will we count percentage
+
+create total weight of all of the webserver = 200
+
+so for web-1
+
+120/200 * 100 = 60 %
+
+It is how can find that how to devide traffic between multiple servers

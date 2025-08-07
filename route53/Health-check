@@ -1,0 +1,11 @@
+- Used for health-checking of a server
+
+* installing health check
+
+- go to route53 console click on health checks
+- create health check
+- keep everything default except ip of server add ip of your own server
+- create health check
+- associate this healthcheck with the server
+- go to a record edit and select the respective health check record to associate them with the particular web server
+- if any of server goes down the status will be checked as unhealthy so all the traffic will be routed to the server which is healthy

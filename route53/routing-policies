@@ -1,0 +1,138 @@
+First of all chek Health check file
+
+Routing Policies in AWS
+
+* Simple Routing 
+- use to route traffic to ec2 server using domain names
+
+
+* Weighted Routing
+- Suppose you are running multiple server with different computing power this policy might help you
+- It will allow you to create multiple A RECORDS so you can route websites traffic to multiple servers 
+
+
+* Geolocation
+- Allow you to set up multiple servers 
+- we can fire up multiple servers in particular regions like one server per continent all the traffic will flow to the respected servers
+
+
+* Latency
+- Allow us to set multiple servers
+- user will get response from the nearest server totally based on latency
+- which ever server has lower latency will be the responding server
+
+
+* Geo-proximity 
+- Upgraded version of Latency policy
+- Allows you to set customized user-server response
+- suppose you have servers in mumbai and hydrabad
+- you want to allow users of mumbai, somepart of gujart and some part of mumbai to receive response from mumbai server
+- all another part users will have response from the hydrabad server such as user from kalaburagi, nanded, latur, nizamabad
+
+# To set this policy 
+
+---------
+Step : 01
+---------
+
+- Go to Route53
+- choose Traffic Policies
+- create traffic policy
+- then add name also description if you want to 
+- Select DNS Record type as : 'A:IP address in ipv4 format'
+- click on connect to choose  "new routing rule"
+- choose 'Geoproximity' from routing rules
+- confirm 
+
+---------
+Step : 02
+---------
+- In Endpoint location type choose between 'region' and 'availibility zone'
+- choose next option between region or loca zone 
+- adjust the bias accordingly to the traffic flow and response server you want to 
+- and then choose server ( new endpoint ) let the value be default
+- done
+
+* Fail-Over routing policy
+- active passive scenerio
+- lets say two servers are running and only one of them is facing all the traffic and only when the main server which is currently handling traffic goes down than only this secondary server will come to the picture
+- its like having one active and one passive server
+
+# To make it work 
+
+---------
+Step : 01
+---------
+- create an ec2 isntance install webserver on it name in PRIMARY WEBSERVER 
+- create another webserver and name it SECONDARY SERVER
+
+---------
+Step : 02
+---------
+- go to route53 and create health check policy for the main web servers ip 
+- go to hosting zone and create record 
+- choose routing policy as fail over
+- choose fail over type as primary and attach health check id whcich we preveously created
+- and for record id give suitable id which you can remember why you created for
+
+---------
+Step : 03
+---------
+- create another record using same rotuting policy 
+- but this time add ip of secondary server also no need to add healthcheck
+- In failover record type choose *** secondary ***
+- and hit create records
+- now everthing will be working as we thought
+
+* Multivalue Routing 
+- Multi-Value Answer Routing Policy lets you return multiple IP addresses in DNS responses, similar to basic load balancing. It is not true load balancing, but can distribute traffic across multiple endpoints.
+
+# Setting this policy
+
+---------
+Step : 01
+---------
+- create 3 ec2 servers
+
+Instance    IP Address		Region
+EC2-1	    34.205.20.10	us-east-1
+EC2-2	    13.233.88.45	ap-south-1
+EC2-3	    18.185.56.120	eu-central-1
+
+- Go to Route 53 > Health Checks > Create Health Check
+- Name: EC2-1-HealthCheck
+- What to monitor: Endpoint
+- Protocol: HTTP / HTTPS
+- Domain name / IP: 34.205.20.10
+- Path: / or /health (must return HTTP 200)
+
+Advanced settings:
+
+- Request Interval: 30 seconds (default)
+- Failure threshold: 3 (default)
+- Click Create health check ***** Repeat this for all instances (3 total) *****
+
+---------
+Step : 02
+---------
+- Go to Route 53 > Hosted Zones > YourDomain
+- Click Create Record
+- Name: www (or blank if root domain)
+- Record type: A (or AAAA if IPv6)
+- TTL: 60 seconds (recommended for faster failover)
+- Value: 34.205.20.10 (first instance IP)
+- Routing Policy: Multi-value answer
+- Associate with Health Check: Yes, select the health check created above
+- Click Create record
+- Repeat for remaining two records:
+
+Second record: IP 13.233.88.45, use second health check
+Third record: IP 18.185.56.120, use third health check
+
+---------
+Step : 03
+--------
+- check using nslookup
+
+* ip based routing
+
