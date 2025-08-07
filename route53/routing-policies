@@ -135,4 +135,22 @@ Step : 03
 - check using nslookup
 
 * ip based routing
+- allows you to serve response based on your source destination
 
+# setup
+
+- create 3 server
+- route53 > CIDR Collection > create CIDR location
+- give collection name
+- add cidr location name
+- add cidr block
+- repeat it for the number of block you want in my case i have 2 which are
+
+100.0.0.0/8 - india
+200.0.0.0/8 - russia
+
+- now go to route53 > select hostedzone (create if you dont have one)
+- click on create record  > give subdomain and ip and then change routing policy to "ip-based"
+- in ip-based column choose your cidr block and choose health check id if any also change ttl to 1m(300)
+- repeat it untill you are done with the number of cidr blocks 
+- and after finishing use nslookup for to verify the changes
