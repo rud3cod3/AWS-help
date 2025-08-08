@@ -1,0 +1,183 @@
+Step 01: VPC + Subnets + Routing**
+
+-- Create VPC
+
+* **Name:** `agneypatel.info`
+* **CIDR block:** `192.168.0.0/24`
+
+-- Create 4 Subnets in Same Region (ap-south-1)
+
+| Subnet Name      | CIDR Block       | AZ          | Type    |
+| ---------------- | ---------------- | ----------- | ------- |
+| public-subnet-1  | 192.168.0.0/26   | ap-south-1a | Public  |
+| private-subnet-1 | 192.168.0.64/26  | ap-south-1a | Private |
+| public-subnet-2  | 192.168.0.128/26 | ap-south-1b | Public  |
+| private-subnet-2 | 192.168.0.192/26 | ap-south-1b | Private |
+
+-- Internet Gateway
+
+* **Name:** `igw-agneypatel`
+* Attach it to VPC `agneypatel.info`
+
+-- Create Elastic IP (EIP)
+
+* For the NAT Gateway (mandatory)
+
+-- Create NAT Gateway
+
+* **Name:** `nat-agneypatel`
+* Subnet: Choose one of the **public subnets**
+* Elastic IP: Use the one you just created
+
+-- Route Tables
+
+-- Public Route Table
+
+* **Name:** `public-rt`
+* **Routes:**
+
+* Destination: `0.0.0.0/0` → Target: **Internet Gateway**
+* **Subnet Associations:**
+
+  * `public-subnet-1`
+  * `public-subnet-2`
+
+-- Private Route Table
+
+* **Name:** `private-rt`
+* **Routes:**
+
+  * Destination: `0.0.0.0/0` → Target: **NAT Gateway**
+
+-- **Subnet Associations:**
+
+  * `private-subnet-1`
+  * `private-subnet-2`
+
+Step 02: Security Groups
+
+-- ALB-SG
+
+- **Inbound:**
+
+  * HTTP (80) → 0.0.0.0/0
+- **Outbound:**
+
+  * All traffic → 0.0.0.0/0
+
+-- EC2-SG
+
+- **Inbound:**
+
+  * HTTP (80) → From `ALB-SG`
+  * SSH (22) → 0.0.0.0/0 *(or your IP for security)*
+- **Outbound:**
+
+  * All traffic → 0.0.0.0/0
+
+Step 03: EC2 Instances (Web Servers)
+
+-- Launch 3 EC2 Instances
+
+* AMI: Amazon Linux 2
+* VPC: `agneypatel.info`
+* Subnet: **private-subnets** (NOT public)
+* Security Group: `EC2-SG`
+* IAM Role: Attach `AmazonEC2RoleforSSM` for session manager (optional but good practice)
+* User Data:
+
+--Instance 1 – **cloudfolk.in**
+
+#!/bin/bash
+yum update -y
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+echo "Welcome to cloudfolk.in" > /var/www/html/index.html
+
+Instance 2 – **cloudfolk.in/aws**
+
+#!/bin/bash
+yum update -y
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+mkdir -p /var/www/html/aws
+echo "Welcome to cloudfolk.in/aws" > /var/www/html/aws/index.html
+
+Instance 3 – **cloudfolk.in/azure**
+
+#!/bin/bash
+yum update -y
+yum install -y httpd
+systemctl start httpd
+systemctl enable httpd
+mkdir -p /var/www/html/azure
+echo "Welcome to cloudfolk.in/azure" > /var/www/html/azure/index.html
+
+Step 04: Target Groups (3 Total)
+
+-- Common Config for All Target Groups:
+
+* Target type: `Instances`
+* Protocol: `HTTP`
+* Port: `80`
+* VPC: `agneypatel.info`
+* Health Check Path: Match route (e.g., `/`, `/aws`, `/azure`)
+
+| Target Group Name | Health Check Path | Registered EC2 |
+| ----------------- | ----------------- | -------------- |
+| `tg-root`         | `/`               | EC2 #1         |
+| `tg-aws`          | `/aws`            | EC2 #2         |
+| `tg-azure`        | `/azure`          | EC2 #3         |
+
+- Register instance manually in each target group.
+- Ensure EC2 is **in a private subnet** but accessible via ALB.
+
+Step 05: Create ALB (Application Load Balancer)
+
+-- ALB Settings:
+
+* Name: `agneypatel.info`
+* Scheme: **Internet-facing**
+* IP type: IPv4
+* VPC: `agneypatel.info`
+* Subnets: Choose **both public subnets**
+* Security Group: `ALB-SG`
+* Listener:
+
+  * Protocol: `HTTP`
+  * Port: `80`
+
+-- Step 06: Listener Rules (Path-Based Routing)
+
+-- After ALB creation → Go to **Listeners → View/Edit Rules**
+
+1. **Default Rule:**
+
+   * Path: `/`
+   * Forward to: `tg-root`
+
+2. **Rule 2:**
+
+   * Path: `/aws*`
+   * Forward to: `tg-aws`
+
+3. **Rule 3:**
+
+   * Path: `/azure*`
+   * Forward to: `tg-azure`
+
+Step 07: Domain (Optional but Recommended)
+
+-- If you want to access via **cloudfolk.in**, do this:
+
+* Go to **Route 53**
+* Create a hosted zone `cloudfolk.in`
+* Add **A Record (Alias)** pointing to your ALB DNS name
+
+If using domain:
+
+* `http://cloudfolk.in`
+* `http://cloudfolk.in/aws`
+* `http://cloudfolk.in/azure`
