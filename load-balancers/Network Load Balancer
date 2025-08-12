@@ -1,0 +1,17 @@
+* Network Load Balancer (NLB) – Layer 4
+- Designed for TCP, UDP, and TLS traffic at massive scale with minimal latency.
+- Ideal for workloads that require raw network performance or are protocol-agnostic.
+
+* National Security & Defense Systems:
+- Many critical systems (e.g., secure VoIP, classified data transfer, sensor data) don’t use HTTP — NLB can route these with near-zero added latency.
+
+* Direct IP handling:
+- Preserves client source IP — useful for government intrusion detection systems (IDS) that require packet-level forensics.
+
+* Static IPs & Elastic IPs:
+- Some government contracts require fixed public IPs for whitelisting — NLB can bind Elastic IPs for this.
+
+* TLS Termination:
+- NLB can terminate TLS with FIPS-compliant ciphers for government-grade encryption compliance.
+- Lawful Interception & Monitoring:
+- By preserving full packet headers, NLB allows lawful packet capture (pcap) for audit or investigation under government authority.

@@ -1,0 +1,105 @@
+1. Create a VPC
+
+- Name : Service Consumer VPC
+- Range : 192.168.0.0/24
+
+2. Create two subnet
+
+* Choose VPC ID : Service Consumer VPC
+* Choose AZ : ap-south-1
+
+* Subner One : 
+- Name : GWLBE_endpoint_Subnet
+- Range : 192.168.0.0/25
+
+* Subnet Two :
+- Name : App_Subnet
+- Range : 192.168.0.128/25
+
+3. Create Route Table
+
+[1] Create route table 
+> Name : "GWLBE_endpoint_Subnet_RT"
+> VPC : Select "Service Consumer VPC" > Create route table
+> Associate subnet : Edit subnet association > "GWLBE_endpoint_Subnet" > Save Association
+
+[2] Create Second Subnet
+> Name : "App_Subnet_RT"
+> VPC : Select "Service Consumer VPC" > Create route table
+> Associate subnet : Edit subnet association > "App_Subnet" > Save Assocation
+
+4. Create Internet Gateway
+
+Name : IG-For-Service-Consumer
+> Attach IG with VPC (Service Consumer VPC)
+
+Now Go to Route Table
+
+* "GWLBE_endpoint_Subnet_RT" > Edit Route > 0.0.0.0/0 | Internet Gateway - choose IGW > Save
+* "App_Subnet_RT" > Edit Route > 0.0.0.0/0 | Internet Gateway - choose IGW > Save
+
+5. Create EC2 Instances 
+
+[1] First Instance
+
+- Name : Web_Server_1
+- Choose keypair
+- Networking setting > Edit
+	Select Subnet : "App_Subnet" 
+	Enable : Assign Public ip
+	Create Security Group : Name : 'Web-Server-SG', Type : All traffic and add Access from everwhere
+
+- Add this user data script
+	
+#!/bin/bash
+yum update -y
+yum install httpd -y
+systemctl enable httpd.service
+systemctl start httpd.service
+echo "Hello this server One" > /var/www/html/index.html
+
+[2] Second EC2 instance
+
+- Name : Web_Server_2
+- Choose keypair
+- Networking setting > Edit
+	Select Subnet : "App_Subnet"
+	Enable : Assign Public ip
+	Select Security Group : Web-Server-SG (Preveously created)
+
+- Add this user data script
+
+#!/bin/bash
+yum update -y
+yum install httpd -y
+systemctl enable httpd.service
+systemctl start httpd.service
+echo "Hello this server Two" > /var/www/html/index.html
+
+6. Create VPC
+
+Name : Service Provide VPC
+ipv4 CIDR :  192.168.1.0/24
+Done 
+
+7. Create Subnet
+
+VPC ID : Service Provide VPC 	
+Name : Firewall_Subnet
+Choose AZ : ap-south-1
+Subnet : 192.168.1.0/24 
+
+8. Create Route Table
+
+Name : Firewall-Subnet-RT
+VPC : Service Provide VPC
+Subnet Association : Add > Firewall_Subnet > Done
+
+9. Create Internet Gateway
+
+Name : IG-For-Service-Provider
+Create Done then Next
+Attach VPC : choose "Service Provide VPC"
+
+* Now go to Route Table > Firewall-Subnet-RT > Edit Route > 0.0.0.0/0 --- Choose Internet Gateway --- igw-IG-For-Service-Provider >  Save
+

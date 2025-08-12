@@ -1,0 +1,105 @@
+Gateway Load Balancer (GWLB) – Detailed Notes
+
+1. What is GWLB?
+
+* AWS Gateway Load Balancer is a special type of load balancer designed to deploy, scale, and manage third-party network virtual appliances such as:
+
+  * Firewalls
+  * Intrusion Detection Systems (IDS)
+  * Intrusion Prevention Systems (IPS)
+  * Deep Packet Inspection (DPI)
+  * Traffic monitoring tools
+* Works at **Layer 3 (Network Layer)** in OSI model.
+* Combines:
+
+  1. **Transparent network gateway** → For traffic routing.
+  2. **Load balancer** → For distributing traffic across multiple appliances.
+
+2. Why use GWLB?
+
+* Traditional ELB/ALB/NLB handle application or transport traffic but **cannot** transparently insert security appliances into a network.
+* GWLB solves:
+
+  * **Centralized inspection** of traffic from multiple VPCs.
+  * **Auto scaling** of security appliances.
+  * **High availability** and fault tolerance.
+  * **Transparent insertion** → Neither source nor destination knows traffic is going through inspection.
+* Enables **Service Insertion** → You can insert security services between client and server without changing routes on each instance.
+
+3. How GWLB works
+
+Key technologies:
+
+* GENEVE protocol (port 6081)
+
+  * Encapsulates original traffic between GWLB and target appliances.
+  * Preserves all packet metadata (source IP, destination IP, ports, etc.).
+
+* Target group
+
+  * GWLB target group contains virtual appliances (EC2 instances running firewall/IPS software).
+
+* Gateway Load Balancer Endpoint (GWLBE)
+
+  * VPC Endpoint type that connects your VPC to the GWLB.
+  * Allows you to route traffic from your subnet to the GWLB transparently.
+
+* Flow:
+
+1. Traffic from client/subnet is routed to **GWLBE**.
+2. GWLBE sends traffic to **GWLB**.
+3. GWLB encapsulates traffic with GENEVE and sends to appliance EC2s.
+4. Appliance inspects/filters/monitors traffic.
+5. GWLB forwards processed traffic to original destination.
+
+4. Where to use GWLB
+
+* Security VPC pattern:
+
+  * Centralize all security appliances in a dedicated VPC.
+  * Multiple application VPCs send traffic via GWLB endpoints to the security VPC for inspection.
+
+* Hybrid environments :
+
+  * Inserting AWS-hosted firewalls for on-premises traffic via VPN/Direct Connect.
+
+* East-West traffic filtering :
+
+  * Between subnets/VPCs inside AWS.
+
+* North-South traffic filtering :
+
+  * Between internet and VPC workloads.
+
+5. Benefits
+
+* Transparent insertion → No need to reconfigure applications.
+* Auto scaling → Works with EC2 Auto Scaling groups for appliances.
+* Single entry point → All traffic passes through a common inspection point.
+* High availability → Distributes load across appliances in multiple AZs.
+* Centralized control → Easy to manage and monitor.
+* Vendor flexibility → Works with Fortinet, Palo Alto, Cisco, Check Point, and custom appliances.
+
+6. Limitations & Considerations
+
+* Only L3 traffic → Not for application-layer load balancing.
+* GENEVE support required** → Your appliance software must understand GENEVE.
+* Additional cost → Charged for GWLB hours, LCU usage, and data processing.
+* Latency → Adds minimal latency due to packet encapsulation and inspection.
+
+7. High-level setup steps
+
+1. **Deploy GWLB** in the Security VPC.
+2. Create **Target Group** → Add EC2 appliances.
+3. Create **Gateway Load Balancer Endpoint** in each workload VPC.
+4. **Update route tables**:
+   * Route specific traffic to GWLBE instead of directly to destination.
+5. **Appliance handles inspection** and returns traffic.
+6. Monitor and scale appliances as needed.
+
+* Example Use Case
+
+* Company wants all traffic between their app VPC and the internet to pass through a firewall VPC.
+* GWLB is deployed in firewall VPC with firewall appliances.
+* Workload VPCs have GWLBE that route 0.0.0.0/0 to GWLB.
+* Firewall filters traffic, then allows/blocks accordingly.

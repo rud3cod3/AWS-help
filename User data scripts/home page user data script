@@ -1,0 +1,11 @@
+#!/bin/bash
+yum update -y
+# Install Apache (httpd) web server
+yum install -y httpd
+# Start and enable Apache web server
+systemctl start httpd
+systemctl enable httpd
+# Create a custom index.html file
+echo "<html><body><h1>Welcome to agneypatel.info</h1></body></html>" > "/var/www/html/index.html"
+# Restart Apache web server
+systemctl restart httpd

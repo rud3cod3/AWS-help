@@ -1,0 +1,21 @@
+1. Application Load Balancer (ALB) – Layer 7
+
+- Primarily for HTTP/HTTPS and gRPC traffic where content-based decisions are needed.
+- Enables granular traffic control for application-aware routing.
+- Deep Insights for Gov/Interview
+
+* Content filtering & compliance:
+- With AWS WAF integration, ALB can be used to enforce government-mandated content policies (e.g., blocking certain domains, enforcing TLS 1.2+ for security compliance like FIPS 140-3).
+- Supports mTLS (Mutual TLS) in certain configurations for strict identity verification.
+
+* Routing for multi-agency systems:
+- ALB can host multiple government services on one load balancer using host-based routing, which reduces infrastructure cost while isolating data flows logically.
+
+* Logging & Auditing:
+- ALB access logs can be pushed to S3 for long-term retention, which is a common requirement in government cyber audit frameworks.
+
+* Security zoning:
+- ALB can serve as a boundary device between public internet and internal networks, with security groups and IAM policies controlling access.
+
+* Resilience:
+- Multi-AZ design ensures availability in disaster recovery scenarios, essential for mission-critical applications.
