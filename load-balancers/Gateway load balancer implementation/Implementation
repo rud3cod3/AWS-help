@@ -103,3 +103,5 @@ Attach VPC : choose "Service Provide VPC"
 
 * Now go to Route Table > Firewall-Subnet-RT > Edit Route > 0.0.0.0/0 --- Choose Internet Gateway --- igw-IG-For-Service-Provider >  Save
 
+PRACTICAL STOPPED BEACUSE THE CUSTOM AMI WAS NOT FOUND
+

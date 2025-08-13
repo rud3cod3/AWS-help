@@ -1,0 +1,136 @@
+1. Overview
+
+- The Classic Load Balancer (CLB) is the first-generation load balancer service in AWS Elastic Load Balancing (ELB).
+- It distributes incoming application or network traffic across multiple EC2 instances in **one or more Availability Zones** (AZs) to improve **fault tolerance** and **availability**.
+- It is **Layer 4 (Transport)** *and* **Layer 7 (Application)** aware, meaning it can route based on:
+* TCP/SSL (Layer 4)
+* HTTP/HTTPS (Layer 7)
+- However, **it is not as advanced as Application Load Balancer (ALB)** in Layer 7 routing capabilities.
+
+
+2. Core Functions
+
+* Traffic Distribution – spreads requests evenly across multiple EC2 instances.
+* Health Checks – continuously checks the health of instances and routes traffic only to healthy ones.
+* SSL Termination – can handle HTTPS traffic and decrypt requests before forwarding to instances.
+* Sticky Sessions (Session Affinity) – can keep a client connected to the same backend instance.
+* Cross-Zone Load Balancing – can route traffic across all AZs, regardless of the incoming request’s AZ.
+
+
+3. Architecture
+
+Here’s the **flow** when a client sends a request:
+
+1. **DNS Resolution**
+
+   * The DNS name of the CLB (e.g., `my-loadbalancer-1234567890.us-east-1.elb.amazonaws.com`) resolves to the public IPs of the CLB nodes.
+
+2. **Connection to CLB**
+
+   * The client connects to the CLB on a specified listener port (e.g., HTTP on port 80, HTTPS on port 443).
+
+3. **Listener Rules**
+
+   * The CLB listener defines:
+
+     * Protocol and port for incoming traffic (frontend)
+     * Protocol and port for forwarding traffic to backend EC2 instances (backend)
+
+4. **Backend Selection**
+
+   * CLB chooses a **healthy** backend instance based on the configured load balancing algorithm (Round Robin for TCP, Least Outstanding Requests for HTTP/HTTPS).
+
+5. **Health Checks**
+
+   * If an instance fails health checks, it is **removed** from the rotation until it recovers.
+
+
+4. Supported Protocols**
+
+* **Layer 4:** TCP, SSL (Secure TCP)
+* **Layer 7:** HTTP, HTTPS
+
+
+5. Health Checks**
+
+* Configurable via:
+
+  * **Ping protocol** (HTTP, HTTPS, TCP, SSL)
+  * **Ping port**
+  * **Ping path** (for HTTP/HTTPS)
+  * Healthy/unhealthy thresholds
+  * Timeout and interval
+* Example:
+
+  * HTTP on port 80 with ping path `/healthcheck`
+  * Healthy threshold = 3, Unhealthy threshold = 5
+
+
+6. Features
+
+| Feature                       | Details                                                                        |
+| ----------------------------- | ------------------------------------------------------------------------------ |
+| **Cross-Zone Load Balancing** | Distributes traffic evenly across all registered instances in all enabled AZs. |
+| **Connection Draining**       | Allows existing connections to complete before deregistering an instance.      |
+| **Sticky Sessions**           | Uses cookies to bind a client to a specific instance.                          |
+| **Security Groups**           | CLB is associated with a security group to control traffic.                    |
+| **Public or Internal**        | Can be Internet-facing or internal (private).                                  |
+
+
+7. Pros and Cons
+
+Pros:
+
+* Supports both Layer 4 and Layer 7
+* Easy to set up
+* Works with EC2-Classic (old networking mode)
+* Good for basic load balancing needs
+
+Cons:
+
+* No advanced Layer 7 routing (unlike ALB)
+* No native WebSocket support
+* No HTTP/2 support
+* Less cost-efficient compared to newer options
+* Scaling can be slower than ALB/NLB
+* Will eventually be phased out in favor of ALB/NLB
+
+
+8. Pricing
+
+* Charged based on:
+
+  * **Hourly rate** per load balancer
+  * **Per GB** of data processed
+
+9. When to Use
+
+Use CLB when:
+
+* You have **legacy** applications on EC2-Classic or older AWS setups.
+* You need **simple load balancing** without advanced routing rules.
+* Your app uses **both TCP and HTTP protocols** on the same load balancer.
+
+Avoid CLB when:
+
+* You need path-based or host-based routing → Use **ALB**.
+* You need ultra-low latency for TCP traffic → Use **NLB**.
+
+10. Example: Configuration
+
+**Example:**
+You have 4 EC2 instances running a web app in 2 AZs.
+
+Steps:
+
+1. Create CLB
+2. Add listeners: HTTP:80 → HTTP:80
+3. Enable cross-zone load balancing
+4. Configure health check:
+
+   * Protocol: HTTP
+   * Path: `/health`
+   * Interval: 30s, Healthy threshold: 3, Unhealthy threshold: 5
+5. Register EC2 instances
+6. Update security groups for CLB and instances
+7. Point your domain’s DNS to CLB’s DNS name

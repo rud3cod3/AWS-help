@@ -1,0 +1,31 @@
+* For this type of scalling you have 3 options
+
+1. simple scalling
+2. step scalling
+3. target tracking scalling
+
+* if we want to use dynamic scalling we need cloudwatch without that it wont work
+
+* for to make it possible
+
+- create launch template
+- create auto scaling group 
+- use this user data script
+- after instance finish launching
+- go to ASG and "automatic scaling" section and look for "Dynamic Scalling Group"
+- in here we will get policy types
+
+[1] Simple scalling
+- here you can set simple threshold- means if cpu utilization is more than 50 - 60 %  than we can add one more instance
+- here we need to use cloudwatch alarm
+
+[2] Multiple threshold / step scaling
+- Multiple threshold
+- we can add one instance if cpu utilization is between 50 to 60%
+- we can add two instance if cpu utilization is between 60 to 70%
+- we can add three instance if cpu utilization is between 70 to 90%
+
+[3] Target tracking scalling
+- It's automatic
+- Set the value and that's done
+- Self optimization

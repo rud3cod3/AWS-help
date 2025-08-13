@@ -1,0 +1,17 @@
+* Introduction :
+
+AWS, scaling refers to the ability to adjust the computing resources allocated to your applications based on demand. This can involve increasing or decreasing the number of instances (like EC2 instances), adjusting the capacity of databases, or other resources. AWS Auto Scaling is a service that automates this process, ensuring your applications have the resources they need to perform optimally while also controlling costs.
+
+* Vertical Scaling :
+
+- When you increase capacity of the system which is in currently being used than it is called Vertical scalling
+- Adding RAM, Storage. 
+- Expanding Networking Bandwith.
+- Increasing capacity of system
+- AWS Does not support this
+- If demand goes down potential of the system will be wasted
+
+* Horizontal Scaling :
+
+- Here we are adding servers itself according to require 
+- we can terminate instance any time so potential computer power will not be lost

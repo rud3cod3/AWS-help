@@ -1,0 +1,10 @@
+* Scaling function will be performed automatically as a function on a certain date and time
+* Suppose you already know that at weekends you have more user this can be used, also example like big billion days sale
+* in the sense when you already know prior before increased or decreased traffic it will be helpfull
+
+* how to make it work 
+- once you are done creating launch tempalate and auto scalling group go to auto scaling group
+- go to "automatic scalling" section
+- look for scheduled action > add your schedule
+- we can use it for both scale up and scale down 
+- to do it we need to create two seprate groups thats all we need to do 
