@@ -1,0 +1,11 @@
+if the script dont work we can use command
+
+but first use 
+
+nproc
+
+it will give you number of cores that you have
+
+stress --cpu N
+
+N = number of cores
