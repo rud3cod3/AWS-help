@@ -1,0 +1,48 @@
+* AWS Auto Scaling Group Termination Policies: Complete Reference
+
+1. How to Set Termination Policy
+- Steps:
+  1. Navigate to your Auto Scaling Group (ASG) in the AWS Console.
+  2. Scroll down to the *Details* section > *Advanced configuration*.
+  3. Click *Edit* and select your desired *Default Termination Policy*.
+
+2. Scale-In Protection (Prevent Specific Instance Removal)
+- Allows you to prevent specific instances from being terminated when scaling in.
+- How to enable:
+  1. Identify the instance ID from the Instances dashboard.
+  2. Open your ASG > Instance Management.
+  3. Locate the instance by ID, click *Action* > *Scale in protection* > set protection.
+- Instances with protection will not be terminated during scale-in events until you remove their protection.
+
+3. Allocation Strategies for Termination
+- Used to optimize which instances are terminated based on cost, stability, or distribution—especially with Spot Instances and mixed-instance groups.
+
+a. Lowest Price Allocation
+- *Selection:* Picks instances from the lowest priced Spot pools.
+- *Termination:* Cheapest pool instances terminated first.
+- *Pros/Cons:* Maximizes cost savings, but increases risk of termination (if Spot prices rise).
+
+b. Capacity-Optimized Allocation
+- *Selection:* Favors Spot pools least likely to be interrupted.
+- *Termination:* Those in higher-risk pools are terminated first.
+- *Goal:* Reduces risk of sudden interruption, keeps the group more stable.
+
+c. Diversified Allocation
+- *Selection:* Evenly distributes instances across multiple Spot pools.
+- *Termination:* Maintains even balance across pools during termination.
+- *Advantage:* Reduces shock if a whole pool gets interrupted.
+
+4. Termination Policy Options
+
+| Policy Name                     | Behavior/Selection                             | Use Case/Notes                                  |
+|---------------------------------|------------------------------------------------|-------------------------------------------------|
+| Oldest Launch Template/Config   | Terminates instances with oldest config/version| Useful for upgrading group to new configuration  |
+| ClosestToNextInstanceHour       | Terminates instance closest to next bill hour  | Helps optimize for hourly billing (not always relevant for per-second billed OS) |
+| Newest Instance                 | Terminates most recently launched instance     | Good for testing new configs without full replacement |
+| Oldest Instance                 | Terminates longest-running instance            | Target old instances during upgrades or routine maintenance |
+
+5. Key Points
+- Termination policy determines which instance gets removed first when scaling in the ASG—crucial for cost and performance management.
+- Scale-in protection allows operators to safeguard mission-critical or stateful instances against automatic removal.
+- *Allocation strategies* are vital in mixed-instance (Spot and On-Demand) groups, balancing costs with stability and resilience.
+- Select a policy and strategy according to your operational priorities: cost, workload stability, upgrade strategies, or compliance.

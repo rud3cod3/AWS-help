@@ -1,0 +1,64 @@
+* AWS Custom Termination Policy: Complete Reference
+
+1. Overview
+- Custom Termination Policy allows you to fully control which EC2 instances are removed from your Auto Scaling Group (ASG) during scale-in events, rather than relying on preset AWS rules.
+- You use AWS Lambda functions or other programmatic logic to create advanced, automated decisions for terminating instances.
+
+2. Why Use a Custom Termination Policy?
+
+Here are five main reasons :
+
+1. Standard Rules May Not Fit Your Needs
+   - AWS provides several default termination policies, but complex environments or unique requirements may need more tailored logic.
+2. Advanced Checks for Optimal Choice
+   - You can incorporate additional checks:
+     - Instance tags (terminate by environment, role, or lifecycle)
+     - Real-time performance (CPU, memory, network metrics)
+     - Custom business logic for compliance or SLA
+3. Graceful Shutdown
+   - Instead of abrupt termination, your custom policy can ensure:
+     - Traffic drains properly
+     - In-flight requests complete
+     - Notifications sent before termination
+4. Backup and Data Protection
+   - Before terminating, your custom code can:
+     - Back up volumes or state
+     - De-register instances from systems (e.g., load balancers)
+     - Ensure logs or databases are safely saved
+5. Set Any Termination Criteria You Need
+   - Terminate based on **your own requirements**, not just age, price, or launch configuration.
+   - Example criteria:
+     - Least critical service first
+     - Instance health status
+     - Priority of operational tasks
+
+3. How Custom Termination Policies Work
+- Lambda Integration:
+  Typically implemented using an AWS Lambda function, triggered during scale-in events.
+- Programmable Logic:  
+  - Lambda receives the list of candidate instances for termination.
+  - Applies your custom selection logic (based on tags, metrics, shutdown steps, backup routines).
+  - Returns the instance ID(s) to AWS Auto Scaling for termination.
+
+4.Best Practices
+- Ensure Graceful Shutdown:  
+  Always account for running workloads, connections, and data.
+- Monitor Performance:  
+  Use CloudWatch and Lambda logging to track termination success and spot issues.
+- Test Thoroughly:  
+  Validate your logic in a test environment to avoid accidental removal of critical resources.
+
+5. Summary Table
+
+| Capability                  | Benefit/Example                                 | Typical Use Case                  |
+|-----------------------------|-------------------------------------------------|-----------------------------------|
+| Terminate by tags           | Remove instances by environment or role         | Blue/green deployments            |
+| Performance-based selection | Remove least-performant instance                | Cost optimization                 |
+| Data backup before removal  | Ensure logs and state are saved                 | Stateful application scaling      |
+| Notification integration    | Inform systems or people before termination     | Compliance, support teams         |
+| Custom shutdown process     | Run shutdown scripts for graceful exit          | Application migration/upgrades    |
+
+Key Points
+- Custom termination policies = full scripting and automation power for safe, efficient, and flexible scale-in.
+- Use Lambda to combine AWS data with your own logic and shutdown workflow.
+- Ideal for complex environments, data-sensitive apps, or advanced compliance needs.

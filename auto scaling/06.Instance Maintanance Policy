@@ -1,25 +1,58 @@
-* Create your launch template and auto scalling group
-* This policy allows you how your auto scalling group replace instances during operations such as  
-[1] Updating instance to newer version of AMI
-[2] Replacing unhealthy instances identified by health-checks
-[3] Maintaining desired capacity across the availibility zone
+* AWS Instance Maintenance Policy: Complete and Corrected Notes
 
-* To perform update process of ami 
+- The Instance Maintenance Policy in an Auto Scaling Group (ASG) controls how AWS handles the replacement of EC2 instances during key operations, including:
+  -  Updating instances to a newer version of the AMI (Amazon Machine Image)
+  -  Replacing unhealthy instances found by health checks
+  -  Ensuring the desired capacity is maintained across Availability Zones
 
-- Go to launch instance > modify template > add new version ( 2 in my case ) > and select different ami such as ubuntu > done
-- Auto scaling group > "your asg" > launch template > edit > change version to "2" > update
-- Now go to auto scalling > instance refresh >	click on "start instance refresh" 
-- We will have to choose policy for that and here is some info about those policies 
+2. Updating AMI Version: Step-by-Step
+- Process:
+  1. Modify your launch template:
+     - Go to “Launch Instance” > select/modify your template > add a new version (e.g., version 2 with new AMI like Ubuntu)
+  2. Update your ASG:
+     - Go to your ASG > Launch Template > Edit > change to new version (e.g., version 2) > Update
+  3. Refresh instances:
+     - Go to Auto Scaling > Instance Refresh > Click “Start Instance Refresh”
+     - Choose your Instance Maintenance Policy
+     - Adjust instance warm-up time as required (e.g., set to 60 seconds)
+     - Begin the refresh
 
-[1] Terminate and Launch
-- Unhealthy instances are terminated immidiately, followed by new launches
-- cost saving ( beacuse if 2 instance are running and you launch two more than you terminate currently running 2 it will cost slightly more depending on the instance)
-- To set this policy choose launch template > details > instance maintanance policy > edit > update
-- Now when you go to Instance refresh you will find it there > change instance warm up time to 60 and click on start instance refresh
+3. Instance Maintenance Policies Explained
 
-[2] Launch before termination
-- In a way launch 2 instances and then kill the old 2 instances 
-- kinda costs more
+Terminate and Launch
+- Mechanism:  
+  Immediately terminates unhealthy or outdated instances, then launches replacements.
+- Cost Implications:
+  - Generally cost-effective because old instances are terminated before new ones start, limiting overlap.
+  - *Example:* If replacing 2 instances, terminate them first, then launch 2 new ones.
+- How to Set:
+  - In Launch Template: Details > Instance Maintenance Policy > Edit > Update
+  - During Instance Refresh: Set warm-up time (e.g., 60s), then start
 
-[3] Custome policy
-- depends how we use how we customize 
+Launch Before Termination
+- Mechanism: 
+  First launches new instances, waits for them to become healthy, then terminates the old ones.
+- Cost Implications:
+  - More expensive since both old and new instances temporarily run simultaneously
+  - *Example:* Launch 2 replacements before terminating the previous 2, doubling capacity momentarily
+
+Custom Policy
+- Mechanism:  
+  You define a custom logic for launching and terminating instances, such as staggering replacements or adding extra health verification.
+- Use Cases:
+  - Fine-tuning replacement processes for special requirements, compliance, or cost controls
+  - Useful for applications with sensitive dependencies or long warm-up phases
+
+Summary Table
+
+| Policy Type            | Replacement Sequence                       | Cost Impact     | Use Case                       |
+|------------------------|--------------------------------------------|-----------------|-------------------------------|
+| Terminate and Launch   | Terminate old, then launch new             | Cost saving     | Fast, low-cost replacement     |
+| Launch Before Termination | Launch new, then terminate old           | Higher cost     | Zero downtime, more control    |
+| Custom Policy          | User-defined sequence                      | Varies          | Specialized or complex needs   |
+
+Key Points
+- Instance Maintenance Policy is central to how ASG refreshes or replaces EC2 instances during updates, health replacements, and capacity balancing.
+- Terminate and Launch is cheapest, but involves short downtime.
+- Launch Before Termination avoids downtime, but temporarily doubles costs.
+- Custom policies give you control for advanced scenarios.
