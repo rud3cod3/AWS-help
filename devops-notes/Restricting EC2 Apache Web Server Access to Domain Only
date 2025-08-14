@@ -1,0 +1,149 @@
+# **Restricting EC2 Apache Web Server Access to Domain Only**
+
+## **Scenario**
+
+You have an EC2 instance running a website using **Apache HTTPD**. The website works correctly, but it is still accessible via the server’s **public IP address**. You want to:
+
+* Allow access **only via your domain name** (`ktm-logistics.com` / `www.ktm-logistics.com`)
+* Block direct IP access, preventing users from reaching the site via the public IP
+
+---
+
+## **Step 1: Understanding the Problem**
+
+### Default Apache Behavior
+
+* Apache serves requests based on **VirtualHosts**.
+* If a request comes to the server with a Host header **not matching any `ServerName` or `ServerAlias`**, Apache serves the **first VirtualHost** it finds as default.
+* This means requests to the public IP often get served by the first VirtualHost, making the website accessible via IP.
+
+### Goal
+
+* Configure Apache so that:
+
+  1. Requests with the correct **domain** are served normally.
+  2. Requests via **public IP or unknown hostnames** are blocked with a **403 Forbidden**.
+
+## **Step 2: Apache Configuration**
+
+### File Used
+
+`/etc/httpd/conf.d/ktm-logistics.conf` (recommended to keep site-specific config separate from main `httpd.conf`)
+
+### **Configuration Contents**
+
+# Block all requests via IP or unknown hostnames
+<VirtualHost *:80>
+    ServerName _
+    <Location />
+        Require all denied
+    </Location>
+</VirtualHost>
+
+# Serve site only when requested with your domain
+<VirtualHost *:80>
+    ServerName ktm-logistics.com
+    ServerAlias www.ktm-logistics.com
+    DocumentRoot /var/www/html
+
+    <Directory "/var/www/html">
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+### **Explanation of Configuration**
+
+#### 1. **Block all other requests**
+
+<VirtualHost *:80>
+    ServerName _
+    <Location />
+        Require all denied
+    </Location>
+</VirtualHost>
+
+* `ServerName _` is a wildcard, matches requests not handled by any other VirtualHost.
+* `<Location />` targets all URLs on the server.
+* `Require all denied` explicitly returns a **403 Forbidden** response.
+* **Effect:** Any request using the **IP address** or an unrecognized hostname will be blocked.
+
+#### 2. **Serve domain-specific requests**
+
+<VirtualHost *:80>
+    ServerName ktm-logistics.com
+    ServerAlias www.ktm-logistics.com
+    DocumentRoot /var/www/html
+
+    <Directory "/var/www/html">
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+* `ServerName` and `ServerAlias` define the domain(s) Apache will serve.
+* `DocumentRoot` points to your website’s files.
+* `<Directory>` settings allow Apache to serve the content with proper permissions.
+* **Effect:** Requests using `ktm-logistics.com` or `www.ktm-logistics.com` will be served normally.
+
+### **Step 3: Order of VirtualHosts**
+
+* Apache processes VirtualHosts **top-down**.
+### **Step 4: Disable Conflicting Default VirtualHosts**
+
+Some default configs may interfere:
+
+sudo mv /etc/httpd/conf.d/autoindex.conf /etc/httpd/conf.d/autoindex.conf.disabled
+sudo mv /etc/httpd/conf.d/userdir.conf /etc/httpd/conf.d/userdir.conf.disabled
+
+* Ensures your site’s config is the only active VirtualHost.
+
+### **Step 5: Restart Apache**
+
+sudo systemctl restart httpd
+
+* Applies the new configuration.
+* All changes take effect immediately.
+
+## **Step 6: Testing**
+
+1. **Test IP access**:
+
+curl -i http://YOUR_PUBLIC_IP
+
+Output should show:
+
+HTTP/1.1 403 Forbidden
+
+2. **Test domain access**:
+
+curl -i http://ktm-logistics.com
+
+Output should show:
+
+HTTP/1.1 200 OK
+
+## **Step 7: Effects on Web Server**
+
+| Aspect               | Before                                            | After                                               |
+| -------------------- | ------------------------------------------------- | --------------------------------------------------- |
+| Access via domain    | Allowed                                           | Allowed                                             |
+| Access via public IP | Allowed                                           | Blocked (403 Forbidden)                             |
+| Apache VirtualHost   | Any unmatched request served by first VirtualHost | Only matched domain served; IP/unknown host blocked |
+| Security             | IP exposure                                       | IP blocked, reduces direct attack surface           |
+| User experience      | Users could bypass domain                         | Only domain access works                            |
+
+---
+
+## **Conclusion**
+
+By configuring Apache VirtualHosts in this order:
+
+1. Block-all first
+2. Serve domain second
+
+You achieve:
+
+* **IP-based access blocking**
+* **Domain-only access** for your website
+* **Better security** and control over traffic

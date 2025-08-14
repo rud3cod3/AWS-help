@@ -1,0 +1,25 @@
+* Create your launch template and auto scalling group
+* This policy allows you how your auto scalling group replace instances during operations such as  
+[1] Updating instance to newer version of AMI
+[2] Replacing unhealthy instances identified by health-checks
+[3] Maintaining desired capacity across the availibility zone
+
+* To perform update process of ami 
+
+- Go to launch instance > modify template > add new version ( 2 in my case ) > and select different ami such as ubuntu > done
+- Auto scaling group > "your asg" > launch template > edit > change version to "2" > update
+- Now go to auto scalling > instance refresh >	click on "start instance refresh" 
+- We will have to choose policy for that and here is some info about those policies 
+
+[1] Terminate and Launch
+- Unhealthy instances are terminated immidiately, followed by new launches
+- cost saving ( beacuse if 2 instance are running and you launch two more than you terminate currently running 2 it will cost slightly more depending on the instance)
+- To set this policy choose launch template > details > instance maintanance policy > edit > update
+- Now when you go to Instance refresh you will find it there > change instance warm up time to 60 and click on start instance refresh
+
+[2] Launch before termination
+- In a way launch 2 instances and then kill the old 2 instances 
+- kinda costs more
+
+[3] Custome policy
+- depends how we use how we customize 

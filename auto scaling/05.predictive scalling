@@ -1,0 +1,3 @@
+* Predictive Scaling is an advanced feature that enables your cloud infrastructure, specifically EC2 instances, to automatically scale in or out based on predicted traffic
+* By using machine learning models to analyze historical traffic data (usually three weeks of data is a minimum requirement), Predictive Scaling accurately forecasts future demand and proactively manages the compute capacity of your Auto Scaling group.
+* Predictive Scaling can be used in conjunction with dynamic scaling and scheduled scaling. While dynamic scaling responds to changes in real-time, predictive scaling prepares for expected changes, offering a more proactive approach.
