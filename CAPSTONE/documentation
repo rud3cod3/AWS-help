@@ -1,0 +1,43 @@
+* Aim : 
+- Resilient and Scalable Web Application Deployment on AWS
+
+* Project Description
+- This project involves designing and implementing a highly available and scalable web application infrastructure on AWS.
+- The architecture will leverage AWS services to ensure Fault tolerance, Load balancing, Secure user access.
+
+* Objectives
+- High Availability
+- Scalability
+- Security
+- Resilience
+
+* Core AWS Services Utilization
+- Virtual Private Cloud (VPC)
+- Elastic File System (EFS)
+- Elastic Compute Cloud (EC2)
+- AWS Auto Scaling
+- Application Load Balancer (ALB)
+- Route 53
+
+* Project Phases:
+- Design Phase
+	Security
+	Scalability
+	Availability requirements
+- Implementation Phase
+	Create the VPC, subnets, and security groups
+	Configure EFS
+	Setup Custom AMI For Auto Scaling
+	Set up and test Auto Scaling
+	Deploy the ALB
+	Integrate Route 53 for domain management
+- Testing and Optimization Phase
+	Conduct functional and load testing to ensure the application's performance and scalability meet requirements.
+- Documentation Phase
+	Produce detailed documentation covering the architecture, configuration, and deployment process.
+
+Deliverables
+	Architectural diagrams and design documentation
+	Implementation and configuration guide
+	Performance and optimization report
+	A comprehensive project presentation detailing the deployment strategy, encountered challenges, and solutions

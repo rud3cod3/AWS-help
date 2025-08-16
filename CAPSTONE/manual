@@ -1,0 +1,51 @@
+*** Capstone Project ***
+
+1. Create a vpc
+
+VPC NAME : Capstone Project
+
+* create  4 subnets in two different availablity zone
+
+- aps1-az1 (ap-south-1a)
+- aps1-az3 (ap-south-1b)
+
+- Public_Subnet_1A  - 192.168.0.0/26
+- Private_Subnet_1A - 192.168.0.128/26
+- Private_Subnet_2B - 192.168.0.192/26
+- Public_Subnet_2B  - 192.168.0.64/26
+
+- set route tables ans NAT gateway 
+
+2. Create EFS
+
+- create an efs 
+- customize 
+File system : regional
+Diable : disable automatic backups
+Encryptions : Enable encryption of data at rest
+Other settings : default
+
+- In Network Access 
+
+- In boht option choose private subnet and securuty groups 
+- for both next next and done
+- Now create AMI which is compatible for Auto scaling.
+
+3. Launch ec2 instance
+
+- Let it have public ip
+- Keep it in public subnet
+- Then install httpd enable it and start it
+- install amazon-efs-utils
+- Now attach EFS here > go to efs and copy id of efs id which will liook like 
+ [ sudo mount -t efs -o tls fs-0ed35a21f2602a617:/ /efs ] - original 
+ [ sudo mount -t efs -o lts fs-0ed35a21f2602a617:/ /var/www/html/ ] - used in project here add your index.htnl file or your code
+- This mounting will not survive reboots or poweroffs to we need to make modificatino in this file which is located at /etc/fstab
+add things in this format
+
+ { EFS DNS Name:/ /mount/point efs defaults,_netdev 0 0 } - for regerence 
+ the one that is used in project - { fs-0ed35a21f2602a617.ap-south-1.amazonaws.com:/ /var/www/html efs defaults,_netdev 0 0 }
+  
+- Onece everything works verywell create an AMI
+
+4. Create Auto scaling group
