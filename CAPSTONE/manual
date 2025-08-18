@@ -49,3 +49,17 @@ add things in this format
 - Onece everything works verywell create an AMI
 
 4. Create Auto scaling group
+
+* Create launch template
+- version 1 
+- select ami from myami
+- leave networking default we will do it later when we set auto scaling
+- Once that is done leave it now  we are going to create auto scaling group
+
+* Create auto scaling group
+
+* Create target groups for load balancer
+- for port 80 and 8080 ( used in project ) 
+
+* Create application load balancer
+
