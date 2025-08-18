@@ -32,5 +32,6 @@
 - Manual updates required
 - Versioning and Rollback
 - Deny takes precedence over Allow
+- Cannot write more than 6144 characters
 
 3. Inline Policies
