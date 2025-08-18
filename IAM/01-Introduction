@@ -35,3 +35,18 @@
 - Cannot write more than 6144 characters
 
 3. Inline Policies
+- Direct association - policies which are directly embeded within a single iam user, group or role.
+- Exclusively used by one particular entity
+- One policy is tied to One user
+- If entity is deleted policy is also deleted
+- Non-reusable
+- it does not have ARN
+
+* Used when :
+- Specific job needs
+- Keep things secure
+- Short term projects
+- Follow rules
+- Easy to manage for certain cases
+
+** IAM ENTITIES ** 
