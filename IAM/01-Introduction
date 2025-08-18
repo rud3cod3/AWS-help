@@ -1,0 +1,36 @@
+*** iaM - identity access management ***
+
+* We can make use of Account alias for Privacy
+* Defines who is allowed to do what with which AWS resources
+* Two way to use it 1) Graphivcal 2) Json type file
+
+* Types of policies :
+
+1. AWS Managed Policies
+- Create and managed by AWS
+- Provide a way to quickly assign necessary permission based on job function or application need.
+- It also has two parts :
+(1) AWS managed policies (general use)
+(2) Services-linked policies (specific to aws services)
+- There is one drawback which is that it automatically allows access of other related service aswell for example if we allow { ec2fullaccess } it will also let us use cloudwatch and vpc something like that
+
+* Benefits
+- Simple, Predefined by AWS, Automatic Updates, Reusable. Best Practises
+
+* Limitations 
+- Cannot specify permission at the source (e.g individual ec2 instance)
+- We need to write json script by ourself
+- Broad permission
+- No customization
+- Dependence on aws
+- Understanding the complexit
+
+2. Customer Managed Policies	
+- Created and managed by user
+- Tailored for specific purpose
+- Attachable to multiple IAM users
+- Manual updates required
+- Versioning and Rollback
+- Deny takes precedence over Allow
+
+3. Inline Policies
