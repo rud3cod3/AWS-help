@@ -1,0 +1,10 @@
+----------------------------------
+* AWS IAM Root User Best Practices 
+----------------------------------
+
+- Enable Multi-Factor Authentication. ig, microsoft authenticator
+- Do not use root account for daily tasks and create an administrative user
+- Delete or rotate access key
+- We can create upto 2 Access Keys for AWS Root account
+- Keep email account secure which is associated with your root account
+- Use "ACCOUNT ALIAS" (ig agneypateldotinfo thing)

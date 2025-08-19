@@ -133,3 +133,15 @@
 * SAML ( Security Assertion Markup Language ) 2.0 
 
 - Particularly useful in enterprise scenerio for enabling Single Sign-on (SSO) , allowing user to authenticate once and gain access to multiple application without re-entering credentials.
+
+
+-----------------------
+(4) Custom Trust Policy
+-----------------------
+- Specifies exactly who can assume the role and under what circumstances
+- Generally used to tailor much more complex trust policies  
+
+* Requirements :
+- Cross Account Access with Conditions
+- Fedrated Access Control
+- Limited Access Based on Source IP 
