@@ -1,4 +1,4 @@
-*** iaM - identity access management ***
+*** IAM - Identity access management ***
 
 * We can make use of Account alias for Privacy
 * Defines who is allowed to do what with which AWS resources
@@ -40,7 +40,7 @@
 - One policy is tied to One user
 - If entity is deleted policy is also deleted
 - Non-reusable
-- it does not have ARN
+- It does not have ARN
 
 * Used when :
 - Specific job needs
@@ -54,7 +54,82 @@
 - root user
 - iam user
 
-* when we create a password policy that will not be applied to the iam users on the immidiate basis it will be applied to those which are goint to be created after the user policy creation the policy will be enforced when the users will try to change or update the password
+* When we create a password policy that will not be applied to the iam users on the immidiate basis it will be applied to those which are goint to be created after the user policy creation the policy will be enforced when the users will try to change or update the password
 
 * Group
-- A collection of iam users the permission of this users could be similar or identical 
+- A collection of iam users the permission of this users could be similar or identical
+- Groups don't have credentials
+- One user can be part of multiple groups
+- Regularly monitor groups and its permission
+
+* IAM ROLE
+- Roles are temporary not for permanent basis
+- We can create roles to delegates access to users, application or services that don't normally have access to your aws resources. 
+
+========================
+*** AWS ACCOUNT ROLE ***
+========================
+
+
+---------------
+(1) AWS Service
+---------------  
+- 200+ services
+- Services dont interact with eachother
+- For services to have interaction with each other needs explicit authorization
+- We can assign this permission using two way :
+  1. Traditional method - Here we are storing access keys on instance
+
+> Standard practises
+  2. Role
+
+- We can create role instead of adding accesss token everytime manually
+
+- Create role > choose services > add permission > choose policy > give rolename and description > create role
+
+- Now to make use of it we can insert our user data script to ec2 instance creation and then go to advance setting choose {"IAM instance profile"} and choose your role
+
+
+-----------------------------
+(2) Assume Role / AWS Account
+-----------------------------
+
+- Aws account is also known as "Assume role"
+- User will be granted with temporary credentials which is customizable ranging from 15 minutes from 20 hours default value is 1 hour and this all thing is done with the use of [ AWS SECURITY TOKEN SERVICE (STS) ]
+- IAM roles there are two options : (1) Same Account Access (2) Cross-Account Access
+- Also dont provide parallel access
+- When you want to give permanent access let the user have policies directly attached when you want to give temporary access just use aasume role
+- A role is for anyone who needs it unlike an IAM user
+- Temporary credentials
+- We can create roles for users, services, application which dont have access to aws resources           
+
+* Advantages :
+
+* Security
+  - Temporary credentials from assumed roles ass another layer of security
+  - Suppose credential are compromised it would be expired after limited time so further damage can be prevented
+  - Centralized management
+  - Auditing, Aws logs the assumption of the role
+  - Additional Considerations, for additional security we can use MFA 
+- A role is for anyone who needs it unlike an IAM user
+- Temporary credentials
+- We can create roles for users, services, application which dont have access to aws resources
+
+
+-------------------------------------
+(3) Web Identity / SAML 2.0 Fedration
+-------------------------------------
+
+* Purpose 
+- Security feature that enables secure access to your AWS resources using temporary credentials obtained throught an external identity provider(IdP).
+
+* Web Identity Providers (IdPs)
+- Just like we can sign up with google on almost so many apps and website it is called Web Identity provider.
+- It uses OAuth 2.0 or OpenID Connect (OIDC) and SAML 2.0 Fedration
+- JWT - json web token
+- Google, Facebook and Amazon login uses OAuth2.0 and OIDC for authentication
+
+
+* SAML ( Security Assertion Markup Language ) 2.0 
+
+- Particularly useful in enterprise scenerio for enabling Single Sign-on (SSO) , allowing user to authenticate once and gain access to multiple application without re-entering credentials.
