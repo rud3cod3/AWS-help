@@ -50,3 +50,11 @@
 - Easy to manage for certain cases
 
 ** IAM ENTITIES ** 
+
+- root user
+- iam user
+
+* when we create a password policy that will not be applied to the iam users on the immidiate basis it will be applied to those which are goint to be created after the user policy creation the policy will be enforced when the users will try to change or update the password
+
+* Group
+- A collection of iam users the permission of this users could be similar or identical 
