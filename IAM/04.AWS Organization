@@ -1,0 +1,47 @@
+-------------------
+* AWS Organizations
+-------------------
+- Can be usefull for to manage multiple accounts centrally
+- Designed to simplify account management,billing and compliance enforcement across an organization's AWS account.
+- No addtional charges
+
+--------------------
+* Why it is needed ?
+--------------------
+
+1. Keep things safe 
+   - like if one part has a problem, the others are safe.
+
+2. Watch spending   
+   - helps to analyze spending by departments who spent more and help in budgeting
+
+3. Regulatory compliance 
+   - different account can follow differnet rules if needed, usefull for companies that work in more than one country or industry
+
+4. Control and Rules
+   - Let companies set different accounts, making it easier to manage who can do what
+
+5. Work without mixing up
+   - keeps different project like seprate so they don't get mixed up or cause problems for each other.
+
+6. Disaster Recovery And Grow easily
+   - if something goes wrong having backups in a seprate account can help fix things faster without risking everything else
+   - as comapany grows, it can add more accounts to keep everything organized and running smoothly
+
+7. Stay organized
+   - helps to keep everything tidy
+
+8. Make things just right
+   - each account can be setup exactly how it is needed for a specific job, project or team
+
+9. Try new ideas safely
+   - Gives a safe space to try out new things wihout messing up the main work or loosing important data
+
+------------------
+***  Use Case  ***
+------------------
+- Cental Management
+- Automated Account Creation
+- Organizational Unit
+- Service control Policies (SCP)
+- Consolidate Billing  
