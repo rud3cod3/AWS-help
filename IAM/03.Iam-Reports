@@ -1,0 +1,36 @@
+--------------------
+*** IAM Reports ****
+--------------------
+- Offers insights into the configuration, usage and security of IAM resources within an AWS account
+- Instrumental for auditing, compliance and security management purpose
+- Icludes details about user credentials, permission, policy usage and access paterns
+
+- There are main 3 types of reports
+
+1. IAM Credential Report
+- Located at IAM > Credential report > it would be available to download as csv (comma seprated file) file.
+- Provide so much helpfull information
+
+2. IAM Access Advisor Report
+- Go to user > look for last accessed
+- Access advisor has been renamed and replaced as "Last Accessed"
+- Lets suppose you created a user and added ec2fullaccess policy to user so what will happend is that this advisor tab will show how many total policies are attached means this full access policy also allow access to multiple policies
+- It allows you to revoke unnecessary permissions
+- Lists all services accessible by iam user
+- Enable policy tightning by identifying potentially excessive permission
+- No additional cost 
+
+3. IAM Access Analyzer
+- We can create one per region
+- We can generate 2 types of report here:
+
+    (1) External Access Finding
+	- Reports are generates when resources are shared with entities outside of your account 
+        - It include AmazonS3, IAM roles, KMS, SQS, lambda 
+   	- Not chargable   	
+ 
+    (2) Unused Access Finding
+	- findings are related to permisiions that are not used
+	- identify policies and roles in account that grant permissions which have not been utilized
+	- minimize the potential attack surface and improve your security posture
+	- chargable ( 0.2/iam user and role/month)
