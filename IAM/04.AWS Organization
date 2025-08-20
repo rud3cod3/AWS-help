@@ -37,6 +37,7 @@
 9. Try new ideas safely
    - Gives a safe space to try out new things wihout messing up the main work or loosing important data
 
+
 ------------------
 ***  Use Case  ***
 ------------------
@@ -44,4 +45,60 @@
 - Automated Account Creation
 - Organizational Unit
 - Service control Policies (SCP)
-- Consolidate Billing  
+- Consolidate Billing 
+
+
+--------------------------
+* Service control policies 
+--------------------------
+- Control what you can or cannot do in AWS Accounts
+- When we assign permission to any user we use IAM and to control this policy assigned by IAM we use SCP.
+- Exclusivity to AWS Organizations:
+(1) Exclusively available to Organization accounts only
+(2) Part of service control feature	
+
+
+* Points
+
+- Offers layered Architecture
+- SCP can be applied to different levels root level, organizational unit and individual accounts
+- Scope of the application, action must be allowed by iam policies and not explicitly denied by spcs to procees.
+- Deny as default, primary function is to deny or restrict
+
+* Default SCP
+- Allows unrestricted access to all the aws services
+- It is always working with deny
+
+* Example :
+
+#Script
+
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "Action": "ec2:*",
+      "Resource": "*",
+      "Condition": {
+        "StringNotEquals": {
+          "aws:RequestedRegion": "us-west-2"
+        }
+      }
+    }
+  ]
+}
+
+
+#How this works:
+
+Deny = This takes priority over any IAM permissions.
+Action: ec2:* = Applies to all EC2 actions (launch, terminate, etc.).
+Condition = If the region is not us-west-2, the action is denied.
+
+#Result in practice:
+
+Dev user IAM policy: "Allow EC2:*"
+SCP: "Deny EC2 outside us-west-2"
+- Dev user tries to launch in us-east-1 →  Denied
+- Dev user launches in us-west-2 →  Works 
