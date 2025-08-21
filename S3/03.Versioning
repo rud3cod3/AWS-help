@@ -1,0 +1,16 @@
+------------
+* Versioning
+------------
+
+- Allows you to keep multiple versions of an object in the same bucket
+- Disable by default
+- When versioning is disable original file is over written
+- Restoring a deleted file is next to impossible  But with versioning it is possible
+
+-----------
+* Keypoints
+-----------
+- Once enabled. versioning cant be disabled it can only be suspended
+- Integrates with lifecycle rules
+- Additional Storage Costs
+- When versioning is enable it would costs us more beacuse there are multiple version of same file

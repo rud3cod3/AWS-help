@@ -1,0 +1,40 @@
+-----------------
+* Lifecycle rules
+-----------------
+- Automate data management and optimize storage costs based on access needs.
+- Create multiple rules within a single lifecycle configuration for your bucket.
+
+* How can we make use of this rules ?
+
+- Suppose you have some documents in the bucket. Right now, you are accessing them frequently, but after 30 days that might not be the case. So why let the files stay in Standard S3 storage and pay more? Instead, we can move them to a lower-cost storage such as S3 Standard-IA (backup storage). Later, after a year, if we are hardly accessing these files, we should move them from- Backup to archive storage (like Glacier). This makes perfect sense.
+- We could do this manually, but if there are millions of such files, lifecycle policies are the best solution.
+
+* Life cycle rules Filter type:
+
+1. Prefix
+- Similar to using regex for selecting everything inside a folder, e.g., USA/.
+- "" (empty prefix) will select files only available in the root folder of the bucket.
+
+2. Object Tags
+- We can add tag while we upload the file and based on that we can create filters for policy
+
+3. Object size
+- we can create policy based on size such as minimum size in kb/mb/gb 
+
+* Target
+
++-----------------------+----------------------------+---------------+----------------------------------------------------------------------+
+| Time Since Upload     | Storage Class              | Action        | Description                                                          |
++-----------------------+----------------------------+---------------+----------------------------------------------------------------------+
+| 0 days                | Standard                   | Object Upload | Object is initially uploaded to the Standard storage class.          |
+| 30 days               | Standard-IA                | Transition    | Object is less frequently accessed and moved to Standard-IA.         |
+| 90 days               | One Zone-IA                | Transition    | Object is moved to One Zone-IA for further cost savings.             |
+| 365 days (1 year)     | Glacier Flexible Retrieval | Transition    | Object is archived in Glacier for long-term storage.                 |
+| 1,095 days (3 years)  | Glacier Deep Archive       | Transition    | Object is moved to Glacier Deep Archive for the lowest cost storage. |
+| 3,650 days (10 years) | -                          | Expiration    | Object is deleted as per the company’s data retention policy.        |
++-----------------------+----------------------------+---------------+----------------------------------------------------------------------+
+
+* Setup
+- From starting 0 days to end at 3650 days
+- Choose your bucket > management > Create lifecycle rule
+- Give name then "Choose a rule scope" > select move current version and noncurrent version > Add transition ( untill you are done )

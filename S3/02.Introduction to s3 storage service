@@ -45,6 +45,7 @@
 --------------------
 
 (1) Standard
+
 - Frequently accessed date
 - More than once a month with miliseconds access
 - Expensive, 99.9 Availibility, 99.999999999999 Durability
@@ -53,7 +54,9 @@
 - For every 100GB we are charged 2.5USD/month
 - Default one
  
+
 (2) Infrequent Access
+
 - Long-lived infrequent access like once in a month
 - Avalibility 99.9, Durability 99.99999999999
 - Going to replicate data to 3 or more availibility zone
@@ -62,7 +65,9 @@
 - For every 100gb we are charged 1.38USD/month
 - How ever there are charges on retreval like if you promise to access data only for once and do it more than once they will charge you everytime you access
 
+
 (3) Intelligent tiering
+
 - Suppose if you dont know wether you are going to access data frequently or infrequently we have this class
 - Longlived data with changing or unkown access pattern
 - Avalibility 99.9, Durability 99.99999999999
@@ -71,7 +76,9 @@
 - For every 100GB we are charged 2.3USD/month
 - Here we will have to pay Monitoring and automation fees per object apply.No retrieval fees
 
+
 (4) ONE ZONE
+
 - For infrequant access
 - Its like having backup of on premise servers on s3 cloud
 - It is for Recreatable infrequently accessed data  
@@ -81,9 +88,50 @@
 - For every 100GB we are charged 1.25USD/month
 - Per GB retrieval fees applies if AZ goes down your access is lost for a particular time range
 
+
 (5) Express One Zone
+
 - High performance, single-zone storage class
 - Lowest latency cloud object storage class available today, with data access speeds up to 10x faster and with request costs 50 precnet lower than S3 standard. 
 - We need directory bucket in order to use it 
 - At the time of directory bucket creation we have option to choose AZ
 - It is like keeping an ec2 instance and s3 bucket in same AZ so there will be less latency
+
+
+(6) Glacier Instant Retrival, Glacier Flexible Retrival (formely glacier), Glacier Deep Archive
+
++-------------------+------------------------------------+-----------------------------+
+| Feature	    |		Backup Storage		 |           Archive	       |
++-------------------+------------------------------------+-----------------------------+
+| Primary Goal      |	Disaster recovery 		 |   Long-term data prevention |
+| Access Frequency  |	Potential frequant		 |   Infrequent                |
+| Retrieval Speed   |	Faster (secs to mins)		 |   Slower (mins to hours)    |
+| Cost		    |	May very depending on solution 	 |   Lower                     |
++-------------------+------------------------------------+-----------------------------+
+
+* GLACIER MEANS BACKUP AND ARCHIVAL STORAGE
+
+[1] S3 Glacier instant retrieval
+- Long-lived data that is accessed a few times per year with instant services
+- Availibility 99%
+- Min storage duration 90days
+- Save 68% on storage costs compared to using the s3 Standard-1A, when your data is accesed once per quater.
+
+[2] S3 Glacier flexible retrival 
+- Backup and archive data that is rarely accessed and low cost
+- Avalability 99.9%
+- Min storage duration 90 days 
+- Upto 10% lower cost than s3 glacier instant retrieval, for archives data that is accessed 1-2 times per year
+- We have 3 option for data retrival
+1. Standard ( 3 to 5 hours)	# can be used for archive
+2. Bulk (5 to 12 hours )	# can be used for archive
+3. Expedited (1 to 5 minutes)	# can be used for backups
+
+[3] S3 Glacier Deep Archive
+- Archive data which is very rarely accessed and very low cost
+- Availibility 99.9% and Min storage duration 180 mins
+- Provide the most cost effective storage rarely accessed data
+- We have 3 option for data retrival
+1. Standard ( 12 to 48 hours)     # can be used for archive
+2. Bulk (12 to 48 hours )        # can be used for archive
+ 
