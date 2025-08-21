@@ -26,3 +26,5 @@
 - Metadata-rich: You can tag objects (date, type, owner) and search easily.
 - Durability: Objects are often replicated across multiple locations automatically.
 - Cost-effective: Perfect for massive data sets where you don’t need super-fast, random access all the time.
+
+

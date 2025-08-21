@@ -1,0 +1,89 @@
+-----------------------------
+* S3 (Simple storage service)
+-----------------------------
+- We create buckets to store our data
+- Maximum file size 5TB
+- Provide 99.99999999999% Durability ( chance of data being lost )
+- Cannot be used when frequent read write operation are expected
+- Higher latency
+- Not optimized for frequant data modifications  
+
+----------------
+* S3 charges for 
+----------------
+- Storage
+- Requests
+- Storage Management
+- Data transfer 
+
+-------------------
+* Suitable to store
+-------------------
+- Images | Pdfs | Videos
+- Backups and archives
+- Static web hosting
+- Big data analysis
+- Log Storage
+- Machine Learning Data Set
+- IoT devices data
+- Content distribution
+- Mobile and gaming application
+- Enterprise application
+
+-------------------
+* Bucket name rules
+-------------------
+- Always create bucket nearby your location
+- Globally unique
+- 3 and 63 characters long
+- consist only lowercase, numbers, dots & hyphens (-)
+- Must begin and end with a letter or number
+- Must not be formatted as ip address
+
+--------------------
+* S3 Storage classes
+--------------------
+
+(1) Standard
+- Frequently accessed date
+- More than once a month with miliseconds access
+- Expensive, 99.9 Availibility, 99.999999999999 Durability
+- Data will be replicated across 3 or more availibility zones
+- Dont have to take stress about Min storage, Min object size, Min duration and other consideration
+- For every 100GB we are charged 2.5USD/month
+- Default one
+ 
+(2) Infrequent Access
+- Long-lived infrequent access like once in a month
+- Avalibility 99.9, Durability 99.99999999999
+- Going to replicate data to 3 or more availibility zone
+- Minimum Duration is 30 days (we have to store data atleast for 30 days)
+- Minimum File size id 128kb
+- For every 100gb we are charged 1.38USD/month
+- How ever there are charges on retreval like if you promise to access data only for once and do it more than once they will charge you everytime you access
+
+(3) Intelligent tiering
+- Suppose if you dont know wether you are going to access data frequently or infrequently we have this class
+- Longlived data with changing or unkown access pattern
+- Avalibility 99.9, Durability 99.99999999999
+- Minimum Duration is 30 days
+- Going to replicate data to 3 or more availibility zone
+- For every 100GB we are charged 2.3USD/month
+- Here we will have to pay Monitoring and automation fees per object apply.No retrieval fees
+
+(4) ONE ZONE
+- For infrequant access
+- Its like having backup of on premise servers on s3 cloud
+- It is for Recreatable infrequently accessed data  
+- Avalibility 99.5 , Durability 99.99999999999
+- Stores data in only one availibility zone
+- Minimum file size is 128kb
+- For every 100GB we are charged 1.25USD/month
+- Per GB retrieval fees applies if AZ goes down your access is lost for a particular time range
+
+(5) Express One Zone
+- High performance, single-zone storage class
+- Lowest latency cloud object storage class available today, with data access speeds up to 10x faster and with request costs 50 precnet lower than S3 standard. 
+- We need directory bucket in order to use it 
+- At the time of directory bucket creation we have option to choose AZ
+- It is like keeping an ec2 instance and s3 bucket in same AZ so there will be less latency
