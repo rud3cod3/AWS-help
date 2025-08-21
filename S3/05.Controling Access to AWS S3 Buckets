@@ -1,0 +1,36 @@
+* Controlling Access to AWS S3 Buckets
+
+- Controlling access determines who can view, modify, or delete the objects stored in your AWS S3 bucket.
+
+* Access Control Tools:
+
+1. IAM Policies – Level 1
+- Applied to users, groups, or roles to define permissions across AWS services, including S3.
+
+2.Bucket Policies – Level 2
+- Applied directly to the S3 bucket to control access for specific users, accounts, or roles.
+
+3.ACLs (Access Control Lists) – Level 3 (Legacy, not recommended)
+- Optional and mostly deprecated. Used for fine-grained control but better avoided in modern setups.
+
+* Best Practices:
+-Disable public access by default.
+-Prefer IAM Policies and Bucket Policies over ACLs.
+
+* Rule Table
+
++----------------+-----------------+-----------------+------------------+
+|  IAM Policy	 |  Bucket Policy  |  ACL	     |	Outcome         |
++----------------+-----------------+-----------------+------------------+
+|  Not Attached	 |  Not Attached   |  Not Attached   |	Access Denied   |
+|  Not Attached	 |  Not Attached   |  Allows Access  |	Access Granted  |
+|  Not Attached	 |  Allows Access  |  Not Attached   |	Access Granted  |
+|  Not Attached	 |  Allows Access  |  Allows Access  |	Access Granted  |
+|  Allows Access |  Not Attached   |  Not Attached   |	Access Granted  |
+|  Allows Access |  Not Attached   |  Allows Access  |	Access Granted  |
+|  Allows Access |  Allows Access  |  Not Attached   |	Access Granted  |
+|  Allows Access |  Allows Access  |  Allows Access  |	Access Granted  |
++----------------+-----------------+-----------------+------------------+
+
+
+Note: A single deny rule in the IAM policy, bucket policy, or ACL (if present) will result in denial of access.
