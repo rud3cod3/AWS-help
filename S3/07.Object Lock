@@ -1,0 +1,45 @@
+* S3 Object Lock
+- To prevent deletion of an object for the modification of its version for a fixed amount of time or indefinitely.
+- Help you to protect your data fron accidental or malicious deletions and modifications.
+
+* Terminology
+
+1. Retention mode 
+- Rule that determines how strictly an s3 object version is protected from modification or deletion for a set period of time.
+
+* Governance Mode
+- Objects are locked, but users with special permission can change the lock setting or delete he objet
+- Policies required to do that : (1) s3:BypassGovernanceRetention	(2) s3:PutObjectRetention
+
+* Compliance Mode
+- Objects are locked and cannot be changed or deleted by anyone, including the root account, untill the retention period ends.
+
+
+2.Retention Period
+- Standard duration for which objects will be locked when you enable retention on a bucket.
+
+
+3.Legal Hold
+- Legal holds provides the same protection as a retention period but does not havea predefined expiration date. We can also apply it to a an Object.
+- Usefull in scenerios such as in legal investigations when you don't know when the need to retain the data will end.  
+- Once enabled cant be disabled only can be suspended
+
+
+* How to use / where to find ?
+
+- While creating a bucket we can go to Advance setting of this bucket there we will find it
+- If the bucket is created already go to peroperties and then find for option named "Object Lock"
+- To use object lock "versioning" must be enabled
+
+
+* Default retention
+
+# When disable
+- complete control over which objects have object lock
+- we can have varying object lifespan need within object
+- flexible to modify or remove protections easily is a priority.
+
+# When enable
+- when consistent layer of protection is priority
+- Compliance regulations mandate data immutability
+- reduce manual configuration

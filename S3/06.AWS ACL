@@ -1,0 +1,32 @@
+* AWS ACLs (Access Control Lists)
+- Legacy mechanism for managinh permissions on s3 buckets and objects.
+- Using this we can grant basic access to specific accounts or predefined groups.
+- Can control access at both bucket level and object level.
+- Disabled by default and no ACL is attached and permission management through this method.
+
+* Object ownership
+
+1.Bucket owner preferred
+- Owner has full access of the bucker
+- even if cross account access is enabled and other user can upload their object the owner ship would stay to the bucker owner
+
+2.Object writer
+- The one who uploads the object will have full access over the object not the bucket owner 
+
+* ACLs Permission
+- Allows you to set permission on who can read or write both the buckets and its contents
+- Permission : 
+
+(1) Read (List)		
+(2) Write (create, overwrite, delete)		
+(3) Read ACL (allow to see ACL permissions)
+(4) Write ACL (allow to edit ACL permission)
+
+* ACL is for both bucket and Object
+* we can allow cross account access to bucket using "Add grantee"
+
+* Limitations 
+- Only offers basic permissions
+- Difficult to manage when number of buckets are higher
+- Accidental misconfiguration when large group of buckets are there 
+- Older way to control permission almost deprecated

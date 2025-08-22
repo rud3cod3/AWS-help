@@ -50,3 +50,22 @@ Note: A single deny rule in the IAM policy, bucket policy, or ACL (if present) w
 | Cross-Account | Complex configuration                  | Ideal for S3 cross-account        |
 | Public Access | Not Applicable                         | Explicit public access control    |
 +---------------+----------------------------------------+-----------------------------------+
+
+
+* IAM policy:
+- Created in IAM.
+- Attached to a user, group, or role.
+- Defines what that identity can do across AWS (including S3, EC2, etc.).
+
+* S3 bucket policy:
+- Created on the bucket itself.
+- Attached to the bucket (not the user).
+- Defines what specific principals (IAM users, roles, AWS accounts) can do to that bucket.
+
+* There are 3 way to access a s3 bucket
+- AWS Console				-------+ Less used ig, for testing purposes
+- AWS cli				-------+ Used mainly 90%
+- Using code (Programatical Access)	-------+ Used mainly 90% (Both are used majorly to deal with s3)
+
++ When we try to access bucket using AWS CLI or With Programatical Access we do not need IAM Policy
++ When we access s3 from console we will have to create iam user and policy accordingly we wont have access without iam policy in graphical interface 
