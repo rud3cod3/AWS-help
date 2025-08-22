@@ -1,35 +1,120 @@
 * Symmetric Vs Asymmetric Encryption
 
-
 +-------------------+-------------------------------------------------------------------------------------+--------------------------------------------------------------------------------+
-| Feature	    |	Symmetric Encryption								  |	Asymmetric Encryption							   |
+| Feature           | Symmetric Encryption                                                                | Asymmetric Encryption                                                           |
 +-------------------+-------------------------------------------------------------------------------------+--------------------------------------------------------------------------------+
-| Keys Used	    |	Uses a single key for both encryption and decryption.				  |	Uses a pair of keys: Public key (encryption) and Private key (decryption). |
-| Speed		    |	Faster, as it uses simpler algorithms.						  |	Slower, due to complex mathematical operations.                            |
-| Security	    |	Less secure (if the secret key is intercepted, the system is compromised).	  |	More secure (private key is kept secret, public key can be shared).        |
-| Key Distribution  |	Key exchange is challenging; requires a secure channel to share the secret key.	  |	Easier key distribution; public key can be openly shared without risk.     |
-| Best Use Cases    |	Encrypting large amounts of data (e.g., file encryption, database encryption).	  |	Secure key exchange, digital signatures, authentication.                   |
-| Examples	    |	AES, DES, Blowfish.								  |	RSA, ECC, DSA.					                           |
-| Efficiency	    |   Suitable for bulk data encryption.						  |     Often used in combination with symmetric encryption (e.g., SSL/TLS)        |
-|		    |											  |	to exchange keys securely.						   |
+| Keys Used         | Uses a single key for both encryption and decryption.                               | Uses a pair of keys: Public key (encryption) and Private key (decryption).      |
+| Speed             | Faster, as it uses simpler algorithms.                                              | Slower, due to complex mathematical operations.                                 |
+| Security          | Less secure (if the secret key is intercepted, the system is compromised).          | More secure (private key is kept secret, public key can be shared).             |
+| Key Distribution  | Key exchange is challenging; requires a secure channel to share the secret key.     | Easier key distribution; public key can be openly shared without risk.          |
+| Best Use Cases    | Encrypting large amounts of data (e.g., file encryption, database encryption).      | Secure key exchange, digital signatures, authentication.                        |
+| Examples          | AES, DES, Blowfish.                                                                 | RSA, ECC, DSA.                                                                  |
+| Efficiency        | Suitable for bulk data encryption.                                                  | Often used in combination with symmetric encryption (e.g., SSL/TLS) to exchange|
+|                   |                                                                                     | keys securely.                                                                  |
 +-------------------+-------------------------------------------------------------------------------------+--------------------------------------------------------------------------------+
 
 
 * Server-side Encryption (SSE)
-- Server is responsible for encryption of data
+- Server is responsible for encryption of data.
 - AWS Manages keys (SSE-S3, SSE-KMS) or you can provide keys (SSE-C).
-- Easier to set up and manage, especially with SSE-S3 and SSE-KMS
-- May have slight performance overhead due to encryption/decryption on the server
-- Security Provides "Encryption at rest", protecting data stored in s3
-- Compliance : can help meet compliance requirements, especially with SSE-KMS
-- General data protection compliance requirements,ease of use 
+- Easier to set up and manage, especially with SSE-S3 and SSE-KMS.
+- May have slight performance overhead due to encryption/decryption on the server.
+- Security: Provides "Encryption at rest", protecting data stored in S3.
+- Compliance: can help meet compliance requirements, especially with SSE-KMS.
+- General data protection, compliance requirements, ease of use.
 
 
 * Client-side Encryption (CSE)
-- Encryption happens on client side
-- You are managing your own key
-- More complex to implement and requires additional client-side libraries or tools. Such as, AWS Encyption SDK, OpenSSL, GnuPG(GPG)
-- Impact client-side performance, especially for larger objects.
+- Encryption happens on client side.
+- You are managing your own key.
+- More complex to implement and requires additional client-side libraries or tools.
+  Such as, AWS Encryption SDK, OpenSSL, GnuPG (GPG).
+- Impacts client-side performance, especially for larger objects.
 - Offers stronger security as data is encrypted both in transit and at rest.
-- Compliance : Offers greater flexibility for meeting specific compliance requirements
-- Max security and control, Custom encryption needs, Specific regularity requirements
+- Compliance: Offers greater flexibility for meeting specific compliance requirements.
+- Max security and control, custom encryption needs, specific regulatory requirements.
+
+
+* Server-Side Encryption (SSE) in depth
+
+There are total 4 types of encryption:
+
+(1) Server-Side Encryption with Amazon S3-Managed Keys (SSE-S3)
+
+- S3 handles encryption and decryption process automatically using AWS-managed keys.
+- Can be enabled as the default encryption method for an S3 bucket.
+- We can change this encryption type for a specific object:
+  Object > Properties > Server side encryption > "Override bucket settings".
+- No additional charges for using SSE-S3. Cost is included in standard S3 pricing.
+- Data is encrypted with AES-256 automatically; decrypted upon retrieval.
+
+* Limitations
+1. Limited key management flexibility:
+   - No custom key management.
+   - AWS manages rotation, enabling, disabling, revoking.
+2. Lack of detailed Audit:
+   - SSE-S3 provides basic encryption but no logging/audit capabilities.
+   - Some compliance requires strict control over keys, rotation, auditing.
+   - No customer-managed key integration.
+   - Limited compatibility with advanced S3 features/third-party tools.
+
+
+(2) Server-Side Encryption with AWS Key Management Service (SSE-KMS)
+- KMS (Key Management Service): create and control keys used to encrypt data.
+- SSE-KMS is a powerful method supported in S3, RDS, EBS, EFS.
+- Provides enhanced security and control over encryption keys.
+- Two options: (1) AWS Managed Keys (2) Customer Managed Keys.
+
+
++--------------------------+---------------------------+-------------------------------------------+----------------------------------------------+
+| Feature                  | SSE-S3                    | SSE-KMS (AWS-managed keys)                | SSE-KMS (customer-managed keys)              |
++--------------------------+---------------------------+-------------------------------------------+----------------------------------------------+
+| Encryption Key Management| Fully managed by AWS S3   | AWS KMS manages the keys, but you have    | You create and manage the keys in AWS KMS.   |
+|                          |                           | some visibility and control.              |                                              |
++--------------------------+---------------------------+-------------------------------------------+----------------------------------------------+
+| Key Control              | No direct control over    | Limited control (enable/disable, view     | Full control over key rotation, policies,    |
+|                          | keys.                     | key ID).                                  | and permissions.                             |
++--------------------------+---------------------------+-------------------------------------------+----------------------------------------------+
+| Key Visibility           | No visibility into key    | Limited visibility (key ID).              | Full visibility of key metadata and usage    |
+|                          | details.                  |                                           | through CloudTrail.                          |
++--------------------------+---------------------------+-------------------------------------------+----------------------------------------------+
+| Auditing                 | Basic audit logs through  | Detailed audit logs via CloudTrail.       | Detailed audit logs via CloudTrail.          |
+|                          | S3 server access logs.    |                                           |                                              |
++--------------------------+---------------------------+-------------------------------------------+----------------------------------------------+
+| Key Rotation             | Automatic, with no        | Automatic, trackable through CloudTrail.  | Automatic or manual, fully customizable.     |
+|                          | visibility into process.  |                                           |                                              |
++--------------------------+---------------------------+-------------------------------------------+----------------------------------------------+
+| Granular Permissions     | Limited to S3 bucket      | More granular control via KMS key policies| Full granular control via KMS key policies   |
+|                          | policies.                 | and IAM policies.                         | and IAM policies.                            |
++--------------------------+---------------------------+-------------------------------------------+----------------------------------------------+
+| Compliance               | May not be sufficient for | Better for compliance due to detailed     | Best for compliance due to full control and  |
+|                          | strict compliance         | audit trails.                             | auditability of keys.                        |
+|                          | requirements.             |                                           |                                              |
++--------------------------+---------------------------+-------------------------------------------+----------------------------------------------+
+| Cost                     | Included in S3 storage    | Additional charges for KMS requests.      | Additional charges for KMS requests and key  |
+|                          | cost.                     |                                           | storage.                                     |
++--------------------------+---------------------------+-------------------------------------------+----------------------------------------------+
+| Use Cases                | Simple encryption needs   | Balance of ease of use and some control,  | Sensitive data, compliance requirements,     |
+|                          | where you don’t need      | suitable for most use cases.              | and applications needing fine-grained        |
+|                          | control over keys.        |                                           | control.                                     |
++--------------------------+---------------------------+-------------------------------------------+----------------------------------------------+
+
+
+* Price Components :
+- Key creation and Storage
+- Automatic Key Rotation
+- Key usage costs
+- Data transfer if Cross region
+- Cloudtrail logging
+
+
+(3) Dual-layer Server side Encryption with key Management Service
+- Two layered of protection , data is being encrypted twice before getting stored
+- two layer of security from unautorized encryption
+- First Layer : AWS use SSE-S3 to encrypt the data in the first layer
+- Second Layer : We have AWS-KMS key here, more secure beacuse we have control over it
+
+* Why it is needed ?
+- FIPS (Fedral Inforamation Processing Standard) guidlines
+- Commitee on National Security System Policy 15 (NSA's CNSSP 15) 
+ 
