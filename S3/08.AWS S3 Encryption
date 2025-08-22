@@ -1,0 +1,35 @@
+* Symmetric Vs Asymmetric Encryption
+
+
++-------------------+-------------------------------------------------------------------------------------+--------------------------------------------------------------------------------+
+| Feature	    |	Symmetric Encryption								  |	Asymmetric Encryption							   |
++-------------------+-------------------------------------------------------------------------------------+--------------------------------------------------------------------------------+
+| Keys Used	    |	Uses a single key for both encryption and decryption.				  |	Uses a pair of keys: Public key (encryption) and Private key (decryption). |
+| Speed		    |	Faster, as it uses simpler algorithms.						  |	Slower, due to complex mathematical operations.                            |
+| Security	    |	Less secure (if the secret key is intercepted, the system is compromised).	  |	More secure (private key is kept secret, public key can be shared).        |
+| Key Distribution  |	Key exchange is challenging; requires a secure channel to share the secret key.	  |	Easier key distribution; public key can be openly shared without risk.     |
+| Best Use Cases    |	Encrypting large amounts of data (e.g., file encryption, database encryption).	  |	Secure key exchange, digital signatures, authentication.                   |
+| Examples	    |	AES, DES, Blowfish.								  |	RSA, ECC, DSA.					                           |
+| Efficiency	    |   Suitable for bulk data encryption.						  |     Often used in combination with symmetric encryption (e.g., SSL/TLS)        |
+|		    |											  |	to exchange keys securely.						   |
++-------------------+-------------------------------------------------------------------------------------+--------------------------------------------------------------------------------+
+
+
+* Server-side Encryption (SSE)
+- Server is responsible for encryption of data
+- AWS Manages keys (SSE-S3, SSE-KMS) or you can provide keys (SSE-C).
+- Easier to set up and manage, especially with SSE-S3 and SSE-KMS
+- May have slight performance overhead due to encryption/decryption on the server
+- Security Provides "Encryption at rest", protecting data stored in s3
+- Compliance : can help meet compliance requirements, especially with SSE-KMS
+- General data protection compliance requirements,ease of use 
+
+
+* Client-side Encryption (CSE)
+- Encryption happens on client side
+- You are managing your own key
+- More complex to implement and requires additional client-side libraries or tools. Such as, AWS Encyption SDK, OpenSSL, GnuPG(GPG)
+- Impact client-side performance, especially for larger objects.
+- Offers stronger security as data is encrypted both in transit and at rest.
+- Compliance : Offers greater flexibility for meeting specific compliance requirements
+- Max security and control, Custom encryption needs, Specific regularity requirements
