@@ -116,5 +116,21 @@ There are total 4 types of encryption:
 
 * Why it is needed ?
 - FIPS (Fedral Inforamation Processing Standard) guidlines
-- Commitee on National Security System Policy 15 (NSA's CNSSP 15) 
- 
+- Commitee on National Security System Policy 15 (NSA's CNSSP 15)
+
+
+(4) Server-side encryption with customer-provided keys (SSE-C)
+- Only available using AWS Cli
+- Allow you to use your own key to encrypt your data
+
+* How SSE-C works
+- Client-side key management , keys are stored and managed on client side , aws does not store the keys that client side provide
+- Data encryption, while you upload data you provide encryption key, s3 use this key to encrypt your data
+- Data Decryption, while downloading data you provide same key to decrypt data, s3 use this key to descrypt data before sending this data to client
+
+* Steps 
+- Create key it should be 256-bit for AES-256 type encryption
+- Use openssl to create this key
+- Here is the command to create aes256 key and md5 hash 
+  $ openssl rand 32 > sse-c.key
+  $ key=$(cat sse-c.key | base64)
