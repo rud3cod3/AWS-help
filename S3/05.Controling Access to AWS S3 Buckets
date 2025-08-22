@@ -34,3 +34,19 @@
 
 
 Note: A single deny rule in the IAM policy, bucket policy, or ACL (if present) will result in denial of access.
+
+
+* IAM Policies Vs Bucket Policies
+
++---------------+----------------------------------------+-----------------------------------+
+| Feature       | IAM Policy                             | Bucket Policy                     |
++---------------+----------------------------------------+-----------------------------------+
+| Management    | Managed via the IAM dashboard          | Managed via the S3 dashboard      |
+| Format        | JSON                                   | JSON                              |
+| Scope         | Applies to AWS services/Identity-based | Applies S3 buckets/Resource-based |
+| Use Cases     | Broad AWS permissions                  | Specific S3 permissions           |
+| Attached To   | IAM users, groups, roles               | S3 buckets                        |
+| Best for      | Multiple AWS services                  | Specific S3 access                |
+| Cross-Account | Complex configuration                  | Ideal for S3 cross-account        |
+| Public Access | Not Applicable                         | Explicit public access control    |
++---------------+----------------------------------------+-----------------------------------+
