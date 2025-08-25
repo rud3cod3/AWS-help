@@ -1,0 +1,15 @@
+* VPC Gateway Endpoint For S3
+- By default s3 use public internet to interact with ec2 we can prevent it using this endpoint services
+- Two types of endpoints :
+
+(1) Gateway
+- s3 and dynamoDB
+- no additional cost
+- easier to setup
+
+(2) Interface
+- ideal for sevices which require more granular control over network traffic such as ec2,ssm or other services that support private link
+- charge based on hours
+
+- When we are usng s3 it is the recommended choise
+- integrate seamlessly with vpc route tables and ensure efficient and secure access to s3 

@@ -1,0 +1,85 @@
+# Granting Public Access in Amazon S3
+
+Granting public access to an S3 bucket or its objects can be useful (for example, when hosting a static website), but it also comes with serious security risks. Amazon S3 has three layers of protection that control public access. You can think of it like a door with three locks: unless all three locks are unlocked, the door will not open.
+
+-------------------------
+1. Access Control Lists (ACLs)
+-------------------------
+- The oldest way to manage permissions in S3.  
+- You can use ACLs to make individual objects public (for example, grant READ permission to AllUsers).  
+- Still supported, but less flexible and **not recommended** by AWS compared to bucket policies.  
+- Example (make a single PDF public):  
+  
+aws s3api put-object-acl --bucket my-bucket --key file.pdf --acl public-read
+
+---
+
+2. Bucket Policy
+
+---
+
+* A JSON policy attached to a bucket that defines *who can do what*.
+* The preferred way to grant public access at the bucket level.
+* Example policy that allows anyone to read all objects in a bucket:
+
+  {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "PublicReadGetObject",
+        "Effect": "Allow",
+        "Principal": "*",
+        "Action": "s3:GetObject",
+        "Resource": "arn:aws:s3:::my-bucket/*"
+      }
+    ]
+  }
+
+---
+
+3. Block Public Access (BPA)
+
+---
+
+* The **master switch** AWS introduced to prevent accidental exposure.
+* If enabled, it overrides ACLs and bucket policies, blocking all public access.
+* To allow public access, the relevant BPA settings must be disabled.
+* You can check BPA settings with:
+
+  ```bash
+  aws s3api get-bucket-public-access-block --bucket my-bucket
+  ```
+
+---
+
+## Key Points
+
+* All three layers must permit public access, otherwise requests fail with `AccessDenied`.
+* You don’t need to make an entire bucket public — you can expose only specific objects.
+* Best practice recommendations:
+
+  * Prefer **bucket policies** instead of ACLs.
+  * Keep **Block Public Access** enabled by default; disable only when needed.
+  * For more controlled access, use **CloudFront with signed URLs**.
+
+---
+
+## Security Warning
+
+Public S3 buckets are one of the leading causes of data leaks. To stay safe:
+
+* Double-check which objects are exposed.
+* Never place sensitive data (logs, configs, backups, credentials) in a public bucket.
+* Enable monitoring and logging to track access to your buckets and objects.
+
+---
+
+## Analogy: The Door with 3 Locks
+
+Think of S3 public access like a door with three locks:
+
+1. Access Control Lists (ACLs)
+2. Bucket Policy
+3. Block Public Access settings
+
+If even one lock is closed, the door stays shut. Only when all three are unlocked will the public be able to open the door and access your files.

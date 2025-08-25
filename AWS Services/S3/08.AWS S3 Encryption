@@ -2,14 +2,14 @@
 
 ## Symmetric vs Asymmetric Encryption
 
-| Feature           | Symmetric Encryption                                                                | Asymmetric Encryption                                                           |
-|------------------|-------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| Feature           | Symmetric Encryption                                                                | Asymmetric Encryption                                                          |
+|-------------------|-------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
 | Keys Used         | Single key for both encryption and decryption.                                      | Pair of keys: Public key (encryption) and Private key (decryption).            |
-| Speed             | Faster due to simpler algorithms.                                                   | Slower due to complex mathematical operations.                                  |
-| Security          | Less secure — if the secret key is intercepted, the system is compromised.         | More secure — private key is kept secret; public key can be shared safely.     |
+| Speed             | Faster due to simpler algorithms.                                                   | Slower due to complex mathematical operations.                                 |
+| Security          | Less secure — if the secret key is intercepted, the system is compromised.          | More secure — private key is kept secret; public key can be shared safely.     |
 | Key Distribution  | Challenging; requires secure channel to share secret key.                           | Easier; public key can be openly shared.                                       |
-| Best Use Cases    | Encrypting large amounts of data (files, databases).                                | Secure key exchange, digital signatures, authentication.                        |
-| Examples          | AES, DES, Blowfish.                                                                 | RSA, ECC, DSA.                                                                  |
+| Best Use Cases    | Encrypting large amounts of data (files, databases).                                | Secure key exchange, digital signatures, authentication.                       |
+| Examples          | AES, DES, Blowfish.                                                                 | RSA, ECC, DSA.                                                                 |
 | Efficiency        | Suitable for bulk data encryption.                                                  | Often used with symmetric encryption (e.g., SSL/TLS) to exchange keys securely.|
 
 ---
@@ -55,17 +55,17 @@
   1. AWS-managed keys
   2. Customer-managed keys
 
-| Feature                  | SSE-S3                    | SSE-KMS (AWS-managed keys)               | SSE-KMS (Customer-managed keys)          |
-|--------------------------|---------------------------|----------------------------------------|-----------------------------------------|
+| Feature                  | SSE-S3                    | SSE-KMS (AWS-managed keys)              | SSE-KMS (Customer-managed keys)          |
+|--------------------------|---------------------------|-----------------------------------------|------------------------------------------|
 | Key Management           | Fully AWS managed         | AWS managed with some visibility        | Fully customer managed                   |
-| Key Control              | No direct control         | Limited (enable/disable, view key ID)  | Full control (rotation, policies)       |
-| Key Visibility           | None                      | Limited (key ID)                        | Full metadata and usage via CloudTrail  |
+| Key Control              | No direct control         | Limited (enable/disable, view key ID)   | Full control (rotation, policies)        |
+| Key Visibility           | None                      | Limited (key ID)                        | Full metadata and usage via CloudTrail   |
 | Auditing                 | Basic (S3 server logs)    | Detailed (CloudTrail)                   | Detailed (CloudTrail)                    |
-| Key Rotation             | Automatic, invisible      | Automatic, trackable                    | Automatic or manual, fully customizable |
-| Granular Permissions     | Limited (bucket policies) | Granular via KMS/IAM policies           | Full control via KMS/IAM policies       |
-| Compliance               | May not meet strict needs | Better for compliance                    | Best for compliance and auditability    |
-| Cost                     | Included                  | Extra KMS request charges               | Extra KMS request and storage charges   |
-| Use Cases                | Simple encryption needs   | Balance of control and ease             | Sensitive data, strict compliance needs |
+| Key Rotation             | Automatic, invisible      | Automatic, trackable                    | Automatic or manual, fully customizable  |
+| Granular Permissions     | Limited (bucket policies) | Granular via KMS/IAM policies           | Full control via KMS/IAM policies        |
+| Compliance               | May not meet strict needs | Better for compliance                   |  Best for compliance and auditability    |
+| Cost                     | Included                  | Extra KMS request charges               | Extra KMS request and storage charges    |
+| Use Cases                | Simple encryption needs   | Balance of control and ease             | Sensitive data, strict compliance needs  |
 
 **Price Components:**
 - Key creation & storage  
@@ -129,4 +129,3 @@
 **Note:**
 - Replace `<bucket-name>` and `<object-key>` with your S3 bucket and object names.  
 - The key must be **256-bit** (AES-256) and kept safe; loss of key means data cannot be decrypted.
-

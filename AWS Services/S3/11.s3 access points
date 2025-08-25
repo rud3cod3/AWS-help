@@ -1,0 +1,19 @@
+* S3 Access Points
+- Special way to access s3 bucket
+- Help you to control who can use what and how
+- access point for different users and applications
+- set specific permission and network control for each access points, making data more secure
+
+_ Diagram :
+
+(1) Non Acess Point
+
+User1 ----|			 |---- App1
+	  |----> iam policy ---->|
+User2 ----| 			 |---- App2
+
+(2) Acess points
+
+User1 ----> Access Point ----> App1
+   	  
+User2 ----> Access Point ----> App2
