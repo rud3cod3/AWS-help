@@ -17,3 +17,6 @@ User2 ----| 			 |---- App2
 User1 ----> Access Point ----> App1
    	  
 User2 ----> Access Point ----> App2
+
+- bucket policies is complex in management
+- access points create multiple access points for ac single bucket for a single bucket each with its own specific permission

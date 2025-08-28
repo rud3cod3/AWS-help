@@ -1,0 +1,14 @@
+* Relational Database Management System
+
+(1) Relational Database (SQL)
+- PostgreSQL, OracleDB, SQL server, MariabDB, AWS Aurora
+
+(2) NO SQL
+
+1. Document Oriented		--> mongoDB, CouchDB, AmazonDocumentDB
+2. Key-Value Stores		--> redis, Amazon DynamoDB
+3. Column-family Stores		--> cassandra, HBASE, Amazon KeySpaces
+4. Graph Databases		--> neo4j, Amazon Neptune
+
+(3) In memory Database
+- Redis, Mamcached, Amazon ElastiCache
