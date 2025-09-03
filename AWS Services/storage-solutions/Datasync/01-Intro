@@ -1,0 +1,14 @@
+* Datasync
+- We use Datasync to transfer data from one storage solution to another such as S3 to EFS to SMB to NFS
+- On premise to Cloud we use this to move data
+
+* Two option
+1. From aws storage service to another service ( S3 to EFS)
+2. Onpremise to cloud 
+3. We can also use this to copy data from ec2 to another storage service
+
+* first create space in cloud
+* download and install datasync ova
+* put both machine (one from data need to be copied and datasync vm) in same network
+* check in cloud console
+* start and look history if everything was done correctly

@@ -1,0 +1,5 @@
+* Monolithic Architecture
+- A single, unified codebase/application where all features (UI, business logic, database access, etc.) are tightly coupled and run as one unit
+
+* Microservices Architecture
+- Application is split into small, independent services, each responsible for a specific business capability. They communicate via APIs (usually REST or gRPC).

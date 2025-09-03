@@ -1,0 +1,10 @@
+* Storage Gateway
+* Different characteristics than Datasync
+* Suppose like you are running 10 apps but storing data centrally we can make use of it
+* Acts like a centralize storage for onpremise structure
+
+* Types
+
+1. File Gateway Network File System (NFS/SMB)
+2. Volume Gateway/iSCSI (Stored/cached)
+3. Tape Gateway (VTL)
